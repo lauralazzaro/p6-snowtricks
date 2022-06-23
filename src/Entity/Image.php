@@ -25,7 +25,7 @@ class Image
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $deletedAt;
 
-    #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: 'Image')]
+    #[ORM\ManyToOne(targetEntity: Trick::class, cascade: ['persist'], inversedBy: 'Image')]
     #[ORM\JoinColumn(nullable: false)]
     private $trick;
 

@@ -1,94 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>Snowtrick</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-    <!-- Vendor CSS Files -->
-    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-
-    <!-- Template Main CSS File -->
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Laura Lazzaro</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+          rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{{ asset('assets/css/style.css') }}"  rel="stylesheet"/>
 </head>
-
-<body>
-
-<!-- ======= Header ======= -->
-<header id="header" class="fixed-top header-transparent">
-    <div class="container d-flex align-items-center justify-content-between">
-
-        <div class="logo">
-            <h1 class="text-light"><a href="/trick"><span>Snowtricks</span></a></h1>
-        </div>
-
-        <nav id="navbar" class="navbar">
-            <ul>
-                <li><a class="nav-link " href="/trick">Home</a></li>
-                <li><a class="nav-link " href="/login">Login</a></li>
-                <li><a class="nav-link " href="/register">Signup</a></li>
-                <li><a class="nav-link" href="/trick/new">Create Trick</a></li>
-                <li><a class="nav-link" href="/trick/edit">Update Trick</a></li>
-                <li><a class="nav-link" href="/reset-password">Reset Password</a></li>
+<body style="background-image: url('{{ asset('assets/img/home-bg.jpg') }}')">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container px-4 px-lg-5">
+{#        <a class="navbar-brand" href="?page=home">Snowtricks</a>#}
+{#        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"#}
+{#                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            Menu#}
+{#            <i class="fas fa-bars"></i>#}
+{#        </button>#}
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/trick">Home</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">Login</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">Register</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/trick/new">Create Trick</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/trick/edit">Update Trick</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/reset-password">Reset Password</a></li>
             </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
-
-
-    </div>
-</header><!-- End Header -->
-
-<!-- ======= Hero Section ======= -->
-<section id="hero">
-    <div class="hero-container" data-aos="fade-up">
-
-    </div>
-</section><!-- End Hero -->
-
-<main id="main">
-
-    {% block content %}{% endblock %}
-</main><!-- End #main -->
-
-<!-- ======= Footer ======= -->
-<footer id="footer">
-
-    <div class="container">
-        <div class="copyright">
-            &copy; Copyright <strong><span>Squadfree</span></strong>. All Rights Reserved
-        </div>
-        <div class="credits">
-            <!-- All the links in the footer should remain intact. -->
-            <!-- You can delete the links only if you purchased the pro version. -->
-            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/squadfree-free-bootstrap-template-creative/ -->
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>
     </div>
-</footer><!-- End Footer -->
-<!-- Template Main JS File -->
-<script src="{{ asset('assets/js/main.js') }}"></script>
+</nav>
+<!-- Page Header-->
+<header class="masthead" >
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Snowtricks</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
+<div class="container">
+    {% block content %} {% endblock %}
+</div>
+
+
+<footer class="border-top">
+
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="{{ asset('assets/js/scripts.js') }}"></script>
 </body>
-
 </html>
-

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Trick;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,12 +15,13 @@ class TrickType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-//            ->add('createdAt')
-//            ->add('updatedAt')
-//            ->add('deletedAt')
-            ->add('category')
-            ->add('user')
-        ;
+            ->add('image', FileType::class, [
+                'required' => false,
+                'label' => 'Image',
+                'mapped' => false,
+                'multiple' => true
+            ])
+            ->add('user');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
