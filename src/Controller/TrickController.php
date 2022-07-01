@@ -10,6 +10,7 @@ use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -71,11 +72,16 @@ class TrickController extends AbstractController
                 }
             }
 
-
             $videoData = $form->get('video')->getData();
 
             foreach ($videoData as $video){
+                $now = new \DateTimeImmutable();
+                $now->format('Y-m-d H:i:s');
+
                 $video->setTrick($trick);
+                $video->setCreatedAt($now);
+                $video->setUpdatedAt($now);
+
                 $videoRepository->add($video);
                 $trick->addVideo($video);
             }
@@ -99,17 +105,54 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trick $trick, TrickRepository $trickRepository): Response
+    public function edit(Request $request, Trick $trick, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
     {
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
+            $form = $this->createForm(TrickType::class, $trick);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $trickRepository->add($trick, true);
+            if ($form->isSubmitted() && $form->isValid()) {
+                /** @var UploadedFile $imageFile */
+                $imageUploaded = $form->get('image')->getData();
 
-            return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
-        }
+                if ($imageUploaded) {
+                    foreach ($imageUploaded as $imageFile) {
+                        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
+                        // Move the file to the directory where brochures are stored
+                        try {
+                            $imageFile->move(
+                                $this->getParameter('images_directory'),
+                                $newFilename
+                            );
+
+                            $image = new Image();
+                            $image->setImageUrl($this->getParameter('images_directory') . $newFilename)->setTrick($trick);
+                            $imageRepository->add($image, true);
+
+                            $trick->addImage($image);
+                        } catch (FileException $e) {
+                            // ... handle exception if something happens during file upload
+                        }
+                    }
+                }
+
+                $videoData = $form->get('video')->getData();
+
+                foreach ($videoData as $video) {
+                    $now = new \DateTimeImmutable();
+                    $now->format('Y-m-d H:i:s');
+
+                    $video->setTrick($trick);
+                    $video->setUpdatedAt($now);
+
+                    $videoRepository->add($video);
+                    $trick->addVideo($video);
+                }
+                $trickRepository->update($trick, true);
+
+                return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
+            }
         return $this->renderForm('trick/edit.html.twig', [
             'trick' => $trick,
             'form' => $form,

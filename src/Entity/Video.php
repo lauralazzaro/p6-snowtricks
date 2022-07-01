@@ -17,6 +17,10 @@ class Video
     private $videoUrl;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    /**
+     * @Assert\DateTime
+     * @var string A "Y-m-d H:i:s" formatted value
+     */
     private $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]

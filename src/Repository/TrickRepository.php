@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @extends ServiceEntityRepository<Trick>
@@ -33,6 +34,15 @@ class TrickRepository extends ServiceEntityRepository
     public function remove(Trick $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function update(Trick $entity,  bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
