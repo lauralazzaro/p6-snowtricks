@@ -30,7 +30,7 @@ class Video
     private $deletedAt;
 
     #[ORM\ManyToOne(targetEntity: Trick::class, cascade: ['persist'], inversedBy: 'video')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private $trick;
 
     public function getId(): ?int

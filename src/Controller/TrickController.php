@@ -104,6 +104,15 @@ class TrickController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Trick $trick
+     * @param TrickRepository $trickRepository
+     * @param ImageRepository $imageRepository
+     * @param VideoRepository $videoRepository
+     * @return Response
+     * @throws \Exception
+     */
     #[Route('/{id}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trick $trick, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
     {
@@ -132,7 +141,7 @@ class TrickController extends AbstractController
 
                             $trick->addImage($image);
                         } catch (FileException $e) {
-                            // ... handle exception if something happens during file upload
+                            throw new \Exception($e);
                         }
                     }
                 }
