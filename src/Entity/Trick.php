@@ -33,13 +33,13 @@ class Trick
     #[ORM\ManyToOne(targetEntity: Category::class)]
     private $category;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     private $video;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
-    private $Image;
+    private $image;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -47,7 +47,8 @@ class Trick
 
     public function __construct()
     {
-        $this->Image = new ArrayCollection();
+        $this->image = new ArrayCollection();
+        $this->video = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,14 +128,35 @@ class Trick
         return $this;
     }
 
-    public function getVideo(): ?Video
+    /**
+     * @return null|Collection
+     */
+    public function getVideo(): ?Collection
     {
         return $this->video;
     }
 
-    public function setVideo(?Video $video): self
+    /**
+     * @param mixed $video
+     */
+    public function addVideo($video): void
     {
-        $this->video = $video;
+        if (!$this->video->contains($video)) {
+            $this->video[] = $video;
+            $video->setTrick($this);
+        }
+    }
+
+
+
+    public function removeVideo(?Video $video): ?self
+    {
+        if ($this->video->contains($video)) {
+            $this->video->removeElement($video);
+            if ($video->getTrick() === $this) {
+                $video->setTrick(null);
+            }
+        }
 
         return $this;
     }
@@ -144,13 +166,13 @@ class Trick
      */
     public function getImage(): Collection
     {
-        return $this->Image;
+        return $this->image;
     }
 
     public function addImage(Image $image): self
     {
-        if (!$this->Image->contains($image)) {
-            $this->Image[] = $image;
+        if (!$this->image->contains($image)) {
+            $this->image[] = $image;
             $image->setTrick($this);
         }
 
@@ -159,7 +181,7 @@ class Trick
 
     public function removeImage(Image $image): self
     {
-        if ($this->Image->removeElement($image)) {
+        if ($this->image->removeElement($image)) {
             // set the owning side to null (unless already changed)
             if ($image->getTrick() === $this) {
                 $image->setTrick(null);

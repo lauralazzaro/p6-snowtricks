@@ -11122,10 +11122,8 @@ header.masthead {
   margin-bottom: 3rem;
   padding-top: calc(2rem + 57px);
   padding-bottom: 2rem;
-  background: no-repeat center center;
-  background-color: #6c757d;
   background-size: cover;
-  background-attachment: scroll;
+  background: url("../img/home-bg.jpg") no-repeat scroll center center;
 }
 header.masthead:before {
   content: "";
@@ -11134,7 +11132,6 @@ header.masthead:before {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #212529;
   opacity: 0.5;
 }
 header.masthead .page-heading,
@@ -11236,7 +11233,6 @@ header.masthead .site-heading .h1 {
   font-size: 1.125rem;
   font-style: italic;
   margin-top: 0;
-  color: #6c757d;
 }
 .post-preview > .post-meta > a {
   text-decoration: none;

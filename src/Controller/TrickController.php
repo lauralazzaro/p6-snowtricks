@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\TrickType;
 use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
+use App\Repository\VideoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,6 +20,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/trick')]
 class TrickController extends AbstractController
 {
+
+    private $em;
+
+    public function __construct(EntityManagerInterface $em) {
+        $this->em = $em;
+
+        // In a Command, you *must* call the parent constructor
+    }
+
     #[Route('/', name: 'app_trick_index', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
@@ -26,39 +38,49 @@ class TrickController extends AbstractController
     }
 
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, TrickRepository $trickRepository, ImageRepository $imageRepository): Response
+    public function new(Request $request, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('image')->getData();
+            $imageUploaded = $form->get('image')->getData();
 
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile[0]->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile[0]->guessExtension();
+            if ($imageUploaded) {
+                foreach($imageUploaded as $imageFile) {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $imageFile[0]->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $imageFile->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
 
-                    $image = new Image();
-                    $image->setImageUrl($this->getParameter('images_directory') . $newFilename)->setTrick($trick);
-                    $imageRepository->add($image, true);
+                        $image = new Image();
+                        $image->setImageUrl($this->getParameter('images_directory') . $newFilename)->setTrick($trick);
+                        $imageRepository->add($image, true);
 
-                    $trick->addImage($image);
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                        $trick->addImage($image);
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
                 }
-
-                $trickRepository->add($trick, true);
             }
+
+
+            $videoData = $form->get('video')->getData();
+
+            foreach ($videoData as $video){
+                $video->setTrick($trick);
+                $videoRepository->add($video);
+                $trick->addVideo($video);
+            }
+
+            $trickRepository->add($trick, true);
 
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }

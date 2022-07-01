@@ -1,7 +1,33 @@
 
 {% block content %}
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    <p>Add images: </p>
+    {{ form_row(form.image, { 'attr': {'class': 'custom-file-input'} }) }}
+
+    <p>Add videos (Youtube)</p>
+    <ul id="email-fields-list"
+        data-prototype="{{ form_widget(form.video.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.video|length }}">
+        
+{#        {% for videoUrl in form.video %}#}
+{#            <li>#}
+{#                {{ form_errors(videoUrl) }}#}
+{#                {{ form_widget(videoUrl) }}#}
+{#            </li>#}
+{#        {% endfor %}#}
+    </ul>
+
+    <button type="button"
+            class="add-another-collection-widget"
+            data-list-selector="#email-fields-list">Add a video</button>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+
+    <script src="{{ asset('assets/js/add-collection-widget.js') }}"></script>
+
+    <button class="btn">{{ button_label|default('Create Trick') }}</button>
 {{ form_end(form) }}
 {% endblock %}
