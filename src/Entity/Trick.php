@@ -15,7 +15,7 @@ class Trick
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $name;
 
     #[ORM\Column(type: 'text')]
@@ -44,6 +44,9 @@ class Trick
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $slug;
 
     public function __construct()
     {
@@ -148,7 +151,6 @@ class Trick
     }
 
 
-
     public function removeVideo(?Video $video): ?self
     {
         if ($this->video->contains($video)) {
@@ -199,6 +201,18 @@ class Trick
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

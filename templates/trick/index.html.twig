@@ -1,45 +1,62 @@
 {% extends 'base.html.twig' %}
-
-{%  block content %}
-{% block title %}Trick index{% endblock %}
-
-{% block body %}
-    <h1>Trick index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-{#                <th>CreatedAt</th>#}
-{#                <th>UpdatedAt</th>#}
-{#                <th>DeletedAt</th>#}
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for trick in tricks %}
-            <tr>
-                <td>{{ trick.id }}</td>
-                <td>{{ trick.name }}</td>
-                <td>{{ trick.description }}</td>
-{#                <td>{{ trick.createdAt ? trick.createdAt|date('Y-m-d H:i:s') : '' }}</td>#}
-{#                <td>{{ trick.updatedAt ? trick.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
-{#                <td>{{ trick.deletedAt ? trick.deletedAt|date('Y-m-d H:i:s') : '' }}</td>#}
-                <td>
-                    <a href="{{ path('app_trick_show', {'id': trick.id}) }}">show</a>
-                    <a href="{{ path('app_trick_edit', {'id': trick.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_trick_new') }}">Create new</a>
+{% block header %}
+    <header class="masthead"
+            style="background: url({{ asset("assets/img/home-bg.jpg") }}); background-size: 100% 100%; height: 600px">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Snowtricks</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 {% endblock %}
+
+{% block content %}
+    {% block body %}
+        <div class="container">
+            <div class="row mb-5">
+                {% for trick in tricks %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            {% if trick.image[0] is defined %}
+                                <img class="card-img-top"
+                                     src="{{ asset("assets/uploads/images/" ~ trick.image[0].imageUrl) }}"
+                                     style="max-height: 195px;"
+                                     alt="Card image cap">
+                            {% else %}
+                                <img class="card-img-top"
+                                     src="{{ asset("assets/img/trick.jpg") }}"
+                                     alt="Card image cap">
+                            {% endif %}
+                            <div class="card-body" style="display: inline-block ">
+                                <div class="row">
+                                    <div class="col float-left">
+                                        <a href="{{ path('app_trick_show', {'id': trick.id}) }}"><b>{{ trick.name }}</b></a>
+                                    </div>
+                                    <div class="col float-right">
+                                        <a href="{{ path('app_trick_edit', {'id': trick.id}) }}"><i
+                                                    class="fa-solid fa-pen"></i></a>
+                                        {{ include('trick/_delete_form.html.twig') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div>
+                        <p>
+                            no records found
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <a class="btn btn-primary" href="{{ path('app_trick_new') }}">Create new</a>
+    {% endblock %}
 {% endblock %}

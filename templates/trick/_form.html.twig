@@ -2,8 +2,48 @@
 {% block content %}
 {{ form_start(form) }}
 
-    {{ form_row(form.name) }}
-    {{ form_row(form.description) }}
+    <div class="row mb-2">
+        <div class="col">
+            {{ form_row(form.name) }}
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col">
+            {{ form_row(form.description) }}
+        </div>
+    </div>
+
+
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <div class="row">
+                {% for image in trick.image %}
+                    <div class="col-sm-4">
+                        <img style="width: 100%; height: 150px" class="mb-2"
+                             src="{{ asset("assets/uploads/images/" ~ image.imageUrl) }}"
+                             alt="Card image trick">
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="row">
+                {% for video in trick.video %}
+                    <div class="col-sm-4">
+                        <div class="embed-responsive embed-responsive-4by3">
+                            <iframe width="100%" class="embed-responsive-item" src="{{ video.videoUrl }}"
+                                    title="YouTube video player"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
     <p>Add images: </p>
     {{ form_row(form.image, { 'attr': {'class': 'custom-file-input'} }) }}
 
@@ -13,13 +53,14 @@
         data-widget-tags="{{ '<li></li>'|e }}"
         data-widget-counter="{{ form.video|length }}">
         
-{#        {% for videoUrl in form.video %}#}
-{#            <li>#}
-{#                {{ form_errors(videoUrl) }}#}
-{#                {{ form_widget(videoUrl) }}#}
-{#            </li>#}
-{#        {% endfor %}#}
+        {% for videoUrl in form.video %}
+            <li>
+                {{ form_errors(videoUrl) }}
+                {{ form_widget(videoUrl) }}
+            </li>
+        {% endfor %}
     </ul>
+
 
     <button type="button"
             class="add-another-collection-widget"
@@ -28,6 +69,11 @@
 
     <script src="{{ asset('assets/js/add-collection-widget.js') }}"></script>
 
-    <button class="btn">{{ button_label|default('Create Trick') }}</button>
+    <div class="row mt-3 mb-3">
+        <div class="col-sm-2">
+            <button class="btn btn-primary">{{ button_label|default('Create Trick') }}</button>
+
+        </div>
+    </div>
 {{ form_end(form) }}
 {% endblock %}

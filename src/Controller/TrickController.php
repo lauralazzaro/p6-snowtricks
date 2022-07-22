@@ -21,15 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/trick')]
 class TrickController extends AbstractController
 {
-
-    private $em;
-
-    public function __construct(EntityManagerInterface $em) {
-        $this->em = $em;
-
-        // In a Command, you *must* call the parent constructor
-    }
-
     #[Route('/', name: 'app_trick_index', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
@@ -100,7 +91,7 @@ class TrickController extends AbstractController
     public function show(Trick $trick): Response
     {
         return $this->render('trick/show.html.twig', [
-            'trick' => $trick,
+            'trick' => $trick
         ]);
     }
 
@@ -127,7 +118,6 @@ class TrickController extends AbstractController
                     foreach ($imageUploaded as $imageFile) {
                         $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                         $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
                         // Move the file to the directory where brochures are stored
                         try {
                             $imageFile->move(
@@ -136,7 +126,7 @@ class TrickController extends AbstractController
                             );
 
                             $image = new Image();
-                            $image->setImageUrl($this->getParameter('images_directory') . $newFilename)->setTrick($trick);
+                            $image->setImageUrl($newFilename)->setTrick($trick);
                             $imageRepository->add($image, true);
 
                             $trick->addImage($image);

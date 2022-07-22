@@ -1,44 +1,126 @@
 {% extends 'base.html.twig' %}
+{% block header %}
 
-{% block content %}
-{% block title %}Trick{% endblock %}
+{% if trick.image[0] is defined %}
+<header class="masthead"
+        style="background: url({{ asset("assets/uploads/images/" ~ trick.image[0].imageUrl) }}); background-size: 100% 100%; height: 600px"
+        alt="background">
+    {% else %}
+    <header class="masthead"
+            style="background: url({{ asset("assets/img/trick.jpg") }}); background-size: 100% 100%; height: 600px"
+            alt="background">
+        {% endif %}
 
-{% block body %}
-    <h1>Trick</h1>
+        <div class="container">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="row justify-content-end">
+                    <div class="col-sm-2 justify-content-center" style="background-color: #FFFFFF; z-index: 1000">
+                        <a href="{{ path('app_trick_edit', {'id': trick.id}) }}"><i
+                                    class="fa-solid fa-pen"></i></a>
+                        {{ include('trick/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            {% endif %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ trick.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ trick.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ trick.description }}</td>
-            </tr>
-{#            <tr>#}
-{#                <th>CreatedAt</th>#}
-{#                <td>{{ trick.createdAt ? trick.createdAt|date('Y-m-d H:i:s') : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>UpdatedAt</th>#}
-{#                <td>{{ trick.updatedAt ? trick.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>DeletedAt</th>#}
-{#                <td>{{ trick.deletedAt ? trick.deletedAt|date('Y-m-d H:i:s') : '' }}</td>#}
-{#            </tr>#}
-        </tbody>
-    </table>
+            <div class="container position-relative px-4 px-lg-5">
 
-    <a href="{{ path('app_trick_index') }}">back to list</a>
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>{{ trick.name }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% endblock %}
+    {% block content %}
 
-    <a href="{{ path('app_trick_edit', {'id': trick.id}) }}">edit</a>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    {% for image in trick.image %}
+                        <div class="col-sm-4">
+                            <img style="width: 100%; height: 150px" class="mb-2"
+                                 src="{{ asset("assets/uploads/images/" ~ image.imageUrl) }}"
+                                 alt="Card image trick">
+                        </div>
 
-    {{ include('trick/_delete_form.html.twig') }}
-{% endblock %}
-{% endblock %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="row">
+                    {% for video in trick.video %}
+                        <div class="col-sm-4">
+                            <div class="embed-responsive embed-responsive-4by3">
+                                <iframe width="100%" class="embed-responsive-item" src="{{ video.videoUrl }}"
+                                        title="YouTube video player"
+                                        allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-sm-12">
+                    <p>
+                        {{ trick.description }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card border-secondary mb-3 text-center">
+                    <div class="card-body text-secondary">
+                        Created: {{ trick.createdAt ? trick.createdAt|date('d-m-Y, H:m') : '' }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-secondary mb-3 text-center">
+                    <div class="card-body text-secondary">
+                        Category:
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-secondary mb-3 text-center">
+                    <div class="card-body text-secondary">
+                        Last modified: {{ trick.updatedAt ? trick.updatedAt|date('d-m-Y, H:m') : '' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <form action="" method="post" class="form-inline">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <label for="comment" class="sr-only">Add a comment:</label>
+                        <input type="text" class="form-control" name="comment" id="comment" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-secondary">Leave a comment</button>
+                    </div>
+                </div>
+
+            </form>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                <small> You must be connected to comment </small>
+            </div>
+        {% endif %}
+
+        <hr>
+
+    {% endblock %}
