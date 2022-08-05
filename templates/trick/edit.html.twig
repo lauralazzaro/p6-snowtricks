@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    {% block body %}
+        <h1>Edit Trick</h1>
+
+        {{ include('trick/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {% endblock %}
+
+
+{% endblock %}
+
