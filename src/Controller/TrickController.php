@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Trick;
-use App\Entity\Video;
+use App\Form\CommentType;
 use App\Form\TrickType;
+use App\Repository\CommentRepository;
 use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use App\Repository\VideoRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use Cocur\Slugify\Slugify;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,7 +26,7 @@ class TrickController extends AbstractController
     public function index(TrickRepository $trickRepository): Response
     {
         return $this->render('trick/index.html.twig', [
-            'tricks' => $trickRepository->findAll(),
+            'tricks' => $trickRepository->findAll()
         ]);
     }
 
@@ -41,7 +42,7 @@ class TrickController extends AbstractController
             $imageUploaded = $form->get('image')->getData();
 
             if ($imageUploaded) {
-                foreach($imageUploaded as $imageFile) {
+                foreach ($imageUploaded as $imageFile) {
                     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                     $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
@@ -65,7 +66,7 @@ class TrickController extends AbstractController
 
             $videoData = $form->get('video')->getData();
 
-            foreach ($videoData as $video){
+            foreach ($videoData as $video) {
                 $now = new \DateTimeImmutable();
                 $now->format('Y-m-d H:i:s');
 
@@ -77,6 +78,14 @@ class TrickController extends AbstractController
                 $trick->addVideo($video);
             }
 
+            $slugify = new Slugify();
+            $slug = $slugify->slugify($trick->getName());
+
+            $trick->setSlug($slug);
+
+            $user = $this->getUser();
+            $trick->setUser($user);
+
             $trickRepository->add($trick, true);
 
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
@@ -87,11 +96,33 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_trick_show', methods: ['GET'])]
-    public function show(Trick $trick): Response
+    #[Route('/{slug}', name: 'app_trick_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, CommentRepository $commentRepository, Trick $trick = null): Response
     {
+        if (!$trick) {
+            throw $this->createNotFoundException('No tricks found');
+        }
+
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user = $this->getUser();
+
+            $comment->setUser($user);
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setTrick($trick);
+
+            $commentRepository->add($comment, true);
+
+            $this->addFlash('success', 'Comment added!');
+        }
+
         return $this->render('trick/show.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
+            'formComment' => $form->createView()
         ]);
     }
 
@@ -104,61 +135,70 @@ class TrickController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    #[Route('/{id}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
+    #[Route('/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trick $trick, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
     {
-            $form = $this->createForm(TrickType::class, $trick);
-            $form->handleRequest($request);
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                /** @var UploadedFile $imageFile */
-                $imageUploaded = $form->get('image')->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $imageFile */
+            $imageUploaded = $form->get('image')->getData();
 
-                if ($imageUploaded) {
-                    foreach ($imageUploaded as $imageFile) {
-                        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-                        // Move the file to the directory where brochures are stored
-                        try {
-                            $imageFile->move(
-                                $this->getParameter('images_directory'),
-                                $newFilename
-                            );
+            if ($imageUploaded) {
+                foreach ($imageUploaded as $imageFile) {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $imageFile->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
 
-                            $image = new Image();
-                            $image->setImageUrl($newFilename)->setTrick($trick);
-                            $imageRepository->add($image, true);
+                        $image = new Image();
+                        $image->setImageUrl($newFilename)->setTrick($trick);
+                        $imageRepository->add($image, true);
 
-                            $trick->addImage($image);
-                        } catch (FileException $e) {
-                            throw new \Exception($e);
-                        }
+                        $trick->addImage($image);
+                    } catch (FileException $e) {
+                        throw new \Exception($e);
                     }
                 }
-
-                $videoData = $form->get('video')->getData();
-
-                foreach ($videoData as $video) {
-                    $now = new \DateTimeImmutable();
-                    $now->format('Y-m-d H:i:s');
-
-                    $video->setTrick($trick);
-                    $video->setUpdatedAt($now);
-
-                    $videoRepository->add($video);
-                    $trick->addVideo($video);
-                }
-                $trickRepository->update($trick, true);
-
-                return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
             }
+
+            $videoData = $form->get('video')->getData();
+
+            foreach ($videoData as $video) {
+                $now = new \DateTimeImmutable();
+                $now->format('Y-m-d H:i:s');
+
+                $video->setTrick($trick);
+                $video->setUpdatedAt($now);
+
+                $videoRepository->add($video);
+                $trick->addVideo($video);
+            }
+
+            $slugify = new Slugify();
+            $slug = $slugify->slugify($trick->getName());
+
+            $trick->setSlug($slug);
+
+            $user = $this->getUser();
+            $trick->setUser($user);
+
+            $trickRepository->update($trick, true);
+
+            return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->renderForm('trick/edit.html.twig', [
             'trick' => $trick,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_trick_delete', methods: ['POST'])]
+    #[Route('/{slug}', name: 'app_trick_delete', methods: ['POST'])]
     public function delete(Request $request, Trick $trick, TrickRepository $trickRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {

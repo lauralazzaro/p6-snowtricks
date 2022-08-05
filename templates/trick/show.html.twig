@@ -15,7 +15,7 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <div class="row justify-content-end">
                     <div class="col-sm-2 justify-content-center" style="background-color: #FFFFFF; z-index: 1000">
-                        <a href="{{ path('app_trick_edit', {'id': trick.id}) }}"><i
+                        <a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}"><i
                                     class="fa-solid fa-pen"></i></a>
                         {{ include('trick/_delete_form.html.twig') }}
                     </div>
@@ -46,7 +46,6 @@
                                  src="{{ asset("assets/uploads/images/" ~ image.imageUrl) }}"
                                  alt="Card image trick">
                         </div>
-
                     {% endfor %}
                 </div>
             </div>
@@ -103,18 +102,21 @@
         <hr>
 
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <form action="" method="post" class="form-inline">
+
+            {{ form_start(formComment) }}
+            <div class="form-inline">
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <label for="comment" class="sr-only">Add a comment:</label>
-                        <input type="text" class="form-control" name="comment" id="comment" required>
+                    <div class="col-md-6 ml-auto">
+                        {{ form_widget(formComment) }}
                     </div>
+
                     <div class="col-auto">
                         <button type="submit" class="btn btn-outline-secondary">Leave a comment</button>
                     </div>
                 </div>
+            </div>
+            {{ form_end(formComment) }}
 
-            </form>
         {% else %}
             <div class="alert alert-warning" role="alert">
                 <small> You must be connected to comment </small>
@@ -122,5 +124,20 @@
         {% endif %}
 
         <hr>
+
+        {% for comment in trick.comment %}
+            <div class="card mb-3 comment-div-row">
+                <div class="row">
+                    <div class="col-sm-1 justify-content-start">
+                        <img src="{{ asset("assets/img/snowboard.png") }}" alt="" class="avatar-comment">
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="card-body border-text-comment">
+                                {{ comment.content }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 
     {% endblock %}

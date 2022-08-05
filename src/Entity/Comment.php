@@ -28,8 +28,8 @@ class Comment
     #[ORM\ManyToOne(targetEntity: User::class)]
     private $user;
 
-    #[ORM\ManyToOne(targetEntity: Trick::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Trick::class, cascade: ['persist'], inversedBy: 'comment')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private $trick;
 
     public function getId(): ?int

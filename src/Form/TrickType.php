@@ -42,8 +42,7 @@ class TrickType extends AbstractType
                 'prototype' => true,
                 'label' => false,
                 'empty_data' => ''
-            ])
-            ->add('user');
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -48,6 +48,10 @@ class Trick
     #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
+    private $comment;
+
     public function __construct()
     {
         $this->image = new ArrayCollection();
@@ -216,4 +220,22 @@ class Trick
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getComment() : Collection
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param mixed $comment
+     */
+    public function addComment($comment): void
+    {
+        $this->comment = $comment;
+    }
+
+
 }
