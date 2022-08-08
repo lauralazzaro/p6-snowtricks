@@ -43,3 +43,7 @@ For more information on the setup, please visit:
 ```
     symfony server:start
 ```
+7. URL for the project:
+```
+    http://127.0.0.1:8000
+```
