@@ -2,8 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Trick;
-use App\Entity\Video;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -26,6 +27,10 @@ class TrickType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
+            ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name'
             ])
             ->add('image', FileType::class, [
                 'required' => false,
