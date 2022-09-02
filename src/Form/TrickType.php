@@ -36,7 +36,6 @@ class TrickType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
-                'empty_data' => '',
                 'multiple' => true
             ])
             ->add('video', CollectionType::class, [
@@ -46,7 +45,6 @@ class TrickType extends AbstractType
                 'required' => false,
                 'prototype' => true,
                 'label' => false,
-                'empty_data' => ''
             ]);
     }
 

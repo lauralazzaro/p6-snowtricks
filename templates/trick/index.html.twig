@@ -20,7 +20,7 @@
             <div class="row mb-5">
                 {% for trick in tricks %}
                     <div class="col-md-3">
-                        <div class="card">
+                        <div class="card mb-2">
                             {% if trick.image[0] is defined %}
                                 <img class="card-img-top"
                                      src="{{ asset("assets/uploads/images/" ~ trick.image[0].imageUrl) }}"
@@ -34,7 +34,7 @@
                             <div class="card-body" style="display: inline-block ">
                                 <div class="row">
                                     <div class="col float-left">
-                                        <a href="{{ path('app_trick_show', {'slug': trick.slug}) }}"><b>{{ trick.name }}</b></a>
+                                        <a href="{{ path('app_trick_show', {'slug': trick.slug}) }}"><b><small>{{ trick.name }}</small></b></a>
                                     </div>
                                     <div class="col float-right">
                                         <a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}"><i

@@ -20,7 +20,7 @@ class ImageType extends AbstractType
                 'empty_data' => '',
                 'multiple' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control mb-5'
                 ],
             ]);
     }

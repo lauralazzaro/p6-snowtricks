@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 #[Route('/trick')]
 class TrickController extends AbstractController
 {
-    #[Route('/', name: '$user', methods: ['GET'])]
+    #[Route('/', name: 'app_trick_index', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
         return $this->render('trick/index.html.twig', [
