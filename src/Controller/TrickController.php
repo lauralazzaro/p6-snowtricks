@@ -8,6 +8,7 @@ use App\Entity\Trick;
 use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\TrickType;
+use App\Form\VideoType;
 use App\Repository\CommentRepository;
 use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
@@ -72,13 +73,7 @@ class TrickController extends AbstractController
             $videoData = $form->get('video')->getData();
 
             foreach ($videoData as $video) {
-                $now = new \DateTimeImmutable();
-                $now->format('Y-m-d H:i:s');
-
                 $video->setTrick($trick);
-                $video->setCreatedAt($now);
-                $video->setUpdatedAt($now);
-
                 $videoRepository->add($video);
                 $trick->addVideo($video);
             }
@@ -178,12 +173,6 @@ class TrickController extends AbstractController
             $videoData = $form->get('video')->getData();
 
             foreach ($videoData as $video) {
-                $now = new \DateTimeImmutable();
-                $now->format('Y-m-d H:i:s');
-
-                $video->setTrick($trick);
-                $video->setUpdatedAt($now);
-
                 $videoRepository->add($video);
                 $trick->addVideo($video);
             }
@@ -216,14 +205,4 @@ class TrickController extends AbstractController
         return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('video/{id}/delete', name: 'app_video_delete')]
-    public function deleteVideo(VideoRepository $videoRepository , Video $video = null): Response
-    {
-
-        $trick = $video->getTrick();
-        $slug = $trick->getSlug();
-        $videoRepository->remove($video, true);
-
-        return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
-    }
 }
