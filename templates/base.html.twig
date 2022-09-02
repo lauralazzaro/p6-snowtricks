@@ -25,14 +25,14 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/trick">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/reset-password">Reset Password</a></li>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_logout') }}">Logout</a>
-                        {% else %}
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">Login</a></li>
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_user_edit', {'id': app.user.id}) }}">My Account</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">Register</a></li>
                     {% endif %}
-
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/reset-password">Reset Password</a></li>
                 </ul>
             </div>
         </div>

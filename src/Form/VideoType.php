@@ -13,7 +13,11 @@ class VideoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('videoUrl', TextType::class)
+            ->add('videoUrl', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
         ;
     }
 

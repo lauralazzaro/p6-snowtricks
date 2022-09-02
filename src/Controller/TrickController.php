@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 #[Route('/trick')]
 class TrickController extends AbstractController
 {
-    #[Route('/', name: 'app_trick_index', methods: ['GET'])]
+    #[Route('/', name: '$user', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
         return $this->render('trick/index.html.twig', [
@@ -36,7 +36,7 @@ class TrickController extends AbstractController
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     public function new(Request $request, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             throw new AccessDeniedException();
         }
 
@@ -138,8 +138,8 @@ class TrickController extends AbstractController
     #[Route('/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trick $trick, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
     {
-        if(!$this->getUser()){
-                throw new AccessDeniedException();
+        if (!$this->getUser()) {
+            throw new AccessDeniedException();
         }
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
@@ -149,6 +149,14 @@ class TrickController extends AbstractController
             $imageUploaded = $form->get('image')->getData();
 
             if ($imageUploaded) {
+                foreach ($trick->getImage() as $image) {
+                    $file = $this->getParameter('images_directory') . $image->getImageUrl();
+
+                    if (file_exists($file)) {
+                        unlink($file);
+                    }
+                }
+
                 foreach ($imageUploaded as $imageFile) {
                     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                     $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
