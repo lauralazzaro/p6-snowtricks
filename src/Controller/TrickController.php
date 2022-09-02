@@ -33,6 +33,9 @@ class TrickController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     public function new(Request $request, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
     {
@@ -65,7 +68,7 @@ class TrickController extends AbstractController
 
                         $trick->addImage($image);
                     } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
+                        throw new \Exception($e);
                     }
                 }
             }
@@ -194,8 +197,6 @@ class TrickController extends AbstractController
             $trick->setUser($user);
 
             $trickRepository->update($trick, true);
-
-            return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('trick/edit.html.twig', [
             'trick' => $trick,

@@ -25,6 +25,9 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/{id}/edit', name: 'app_user_edit')]
     public function editUser(Request $request, UserRepository $userRepository, User $user = null): Response
     {
