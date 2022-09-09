@@ -22,7 +22,7 @@ class VideoController extends AbstractController
     }
 
     #[Route('video/{id}/delete', name: 'app_video_delete')]
-    public function deleteVideo(VideoRepository $videoRepository , Video $video = null): Response
+    public function deleteVideo(VideoRepository $videoRepository, Video $video = null): Response
     {
 
         $trick = $video->getTrick();
@@ -33,24 +33,24 @@ class VideoController extends AbstractController
     }
 
     #[Route('video/{id}/edit', name: 'app_video_edit')]
-    public function editVideo(Request $request, TrickRepository $trickRepository, VideoRepository $videoRepository , Video $video = null): Response
+    public function editVideo(Request $req, TrickRepository $trickRepo, VideoRepository $videoRepo, Video $video = null): Response
     {
 
         $trick = $video->getTrick();
 
         $form = $this->createForm(VideoType::class, $video);
-        $form->handleRequest($request);
+        $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $trick->getSlug();
 
             $video->setUpdatedAt(new \DateTimeImmutable());
 
-            $videoRepository->add($video, true);
+            $videoRepo->add($video, true);
 
             $trick->setUpdatedAt(new \DateTimeImmutable());
 
-            $trickRepository->update($trick, true);
+            $trickRepo->update($trick, true);
 
             return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
         }

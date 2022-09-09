@@ -111,7 +111,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user = $this->getUser();
 
             $comment->setUser($user);
@@ -215,5 +214,4 @@ class TrickController extends AbstractController
 
         return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
     }
-
 }
