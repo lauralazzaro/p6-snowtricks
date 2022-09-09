@@ -71,6 +71,7 @@ class ImageController extends AbstractController
                             $newFilename
                         );
 
+                        $image->setUpdatedAt(new \DateTimeImmutable());
                         $image->setImageUrl($newFilename)->setTrick($trick);
                         $imageRepository->add($image, true);
 

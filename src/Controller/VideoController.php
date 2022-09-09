@@ -43,7 +43,13 @@ class VideoController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $trick->getSlug();
+
+            $video->setUpdatedAt(new \DateTimeImmutable());
+
             $videoRepository->add($video, true);
+
+            $trick->setUpdatedAt(new \DateTimeImmutable());
+
             $trickRepository->update($trick, true);
 
             return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);

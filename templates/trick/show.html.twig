@@ -127,8 +127,8 @@
 		    <div class="card mb-3 comment-div-row">
 			    <div class="row">
 				    <div class="col-sm-1 justify-content-start">
-					    {% if user.imageUrl is defined %}
-						    {% set avatar = asset("assets/uploads/avatars/" ~ user.imageUrl) %}
+					    {% if trick.user.imageUrl is defined %}
+						    {% set avatar = asset("assets/uploads/avatars/" ~ trick.user.imageUrl) %}
 					    {% else %}
 						    {% set avatar = asset("assets/img/snowboard.png") %}
 					    {% endif %}

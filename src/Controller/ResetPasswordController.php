@@ -118,6 +118,7 @@ class ResetPasswordController extends AbstractController
                 $form->get('plainPassword')->getData()
             );
 
+            $user->setUpdatedAt(new \DateTimeImmutable());
             $user->setPassword($encodedPassword);
             $this->entityManager->flush();
 

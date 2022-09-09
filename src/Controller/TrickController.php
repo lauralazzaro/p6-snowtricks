@@ -115,7 +115,7 @@ class TrickController extends AbstractController
             $user = $this->getUser();
 
             $comment->setUser($user);
-            $comment->setCreatedAt(new \DateTimeImmutable());
+
             $comment->setTrick($trick);
 
             $commentRepository->add($comment, true);
@@ -195,6 +195,8 @@ class TrickController extends AbstractController
 
             $user = $this->getUser();
             $trick->setUser($user);
+
+            $trick->setUpdatedAt(new \DateTimeImmutable());
 
             $trickRepository->update($trick, true);
         }

@@ -66,10 +66,7 @@ class UserController extends AbstractController
                 }
             }
 
-            $now = new \DateTimeImmutable();
-            $now->format('Y-m-d H:i:s');
-
-            $user->setUpdatedAt($now);
+            $user->setUpdatedAt(new \DateTimeImmutable());
             $userRepository->add($user, true);
         }
 

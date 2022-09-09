@@ -32,6 +32,11 @@ class Comment
     #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private $trick;
 
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTimeImmutable());
+    }
+
     public function getId(): ?int
     {
         return $this->id;
