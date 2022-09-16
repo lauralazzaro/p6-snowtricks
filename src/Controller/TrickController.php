@@ -14,6 +14,8 @@ use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use App\Repository\VideoRepository;
 use Cocur\Slugify\Slugify;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -21,6 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[Route('/trick')]
 class TrickController extends AbstractController
@@ -37,8 +41,12 @@ class TrickController extends AbstractController
      * @throws \Exception
      */
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
-    {
+    public function new(
+        Request $request,
+        TrickRepository $trickRepository,
+        ImageRepository $imageRepository,
+        VideoRepository $videoRepository
+    ): Response {
         if (!$this->getUser()) {
             throw new AccessDeniedException();
         }
@@ -100,8 +108,13 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'app_trick_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, CommentRepository $commentRepository, Trick $trick = null): Response
-    {
+    public function show(
+        Request                $request,
+        CommentRepository      $commentRepository,
+        PaginatorInterface     $paginator,
+        EntityManagerInterface $em,
+        Trick                  $trick = null
+    ): Response {
         if (!$trick) {
             throw $this->createNotFoundException('No tricks found');
         }
@@ -122,8 +135,24 @@ class TrickController extends AbstractController
             $this->addFlash('success', 'Comment added!');
         }
 
+        $dql = "SELECT a FROM App\Entity\Comment a WHERE a.trick = " . $trick->getId();
+        $query = $em->createQuery($dql);
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            5 /*limit per page*/
+        );
+
+        $pagination->setCustomParameters([
+            'align' => 'center',
+            'style' => 'bottom'
+        ]);
+
+        // parameters to template
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
+            'pagination' => $pagination,
             'formComment' => $form->createView()
         ]);
     }
@@ -131,15 +160,21 @@ class TrickController extends AbstractController
     /**
      * @param Request $request
      * @param Trick $trick
-     * @param TrickRepository $trickRepository
-     * @param ImageRepository $imageRepository
-     * @param VideoRepository $videoRepository
+     * @param TrickRepository $trickRepo
+     * @param ImageRepository $imageRepo
+     * @param VideoRepository $videoRepo
      * @return Response
      * @throws \Exception
      */
     #[Route('/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trick $trick, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository): Response
-    {
+    public function edit(
+        Request         $request,
+        Trick           $trick,
+        TrickRepository $trickRepo,
+        ImageRepository $imageRepo,
+        VideoRepository $videoRepo
+    ): Response {
+
         if (!$this->getUser()) {
             throw new AccessDeniedException();
         }
@@ -171,7 +206,7 @@ class TrickController extends AbstractController
 
                         $image = new Image();
                         $image->setImageUrl($newFilename)->setTrick($trick);
-                        $imageRepository->add($image, true);
+                        $imageRepo->add($image, true);
 
                         $trick->addImage($image);
                     } catch (FileException $e) {
@@ -183,7 +218,7 @@ class TrickController extends AbstractController
             $videoData = $form->get('video')->getData();
 
             foreach ($videoData as $video) {
-                $videoRepository->add($video);
+                $videoRepo->add($video);
                 $trick->addVideo($video);
             }
 
@@ -197,7 +232,7 @@ class TrickController extends AbstractController
 
             $trick->setUpdatedAt(new \DateTimeImmutable());
 
-            $trickRepository->update($trick, true);
+            $trickRepo->update($trick, true);
         }
         return $this->renderForm('trick/edit.html.twig', [
             'trick' => $trick,

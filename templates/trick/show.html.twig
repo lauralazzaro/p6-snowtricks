@@ -123,24 +123,51 @@
 
 	    <hr>
 
-	    {% for comment in trick.comment %}
-		    <div class="card mb-3 comment-div-row">
-			    <div class="row">
-				    <div class="col-sm-1 justify-content-start">
-					    {% if trick.user.imageUrl is defined %}
-						    {% set avatar = asset("assets/uploads/avatars/" ~ trick.user.imageUrl) %}
-					    {% else %}
-						    {% set avatar = asset("assets/img/snowboard.png") %}
-					    {% endif %}
-					    <img src="{{ avatar }}" alt="" class="avatar-comment">
-				    </div>
-				    <div class="col-sm-8">
-					    <div class="card-body border-text-comment">
-						    {{ comment.content }}
+		    {% for comment in pagination %}
+			    <div class="card mb-3 comment-div-row">
+				    <div class="row">
+					    <div class="col-sm-1 justify-content-start">
+						    {% if trick.user.imageUrl is defined %}
+							    {% set avatar = asset("assets/uploads/avatars/" ~ trick.user.imageUrl) %}
+						    {% else %}
+							    {% set avatar = asset("assets/img/snowboard.png") %}
+						    {% endif %}
+						    <img src="{{ avatar }}" alt="" class="avatar-comment">
+					    </div>
+					    <div class="col-sm-8">
+						    <div class="card-body border-text-comment">
+							    {{ comment.content }}
+						    </div>
 					    </div>
 				    </div>
 			    </div>
-		    </div>
-	    {% endfor %}
+
+		    {% endfor %}
+
+	    {# display navigation #}
+	    <div class="navigation">
+		    {{ knp_pagination_render(pagination) }}
+	    </div>
+
+{#	    {% for comment in trick.comment %}#}
+{#		    <div class="card mb-3 comment-div-row">#}
+{#			    <div class="row">#}
+{#				    <div class="col-sm-1 justify-content-start">#}
+{#					    {% if trick.user.imageUrl is defined %}#}
+{#						    {% set avatar = asset("assets/uploads/avatars/" ~ trick.user.imageUrl) %}#}
+{#					    {% else %}#}
+{#						    {% set avatar = asset("assets/img/snowboard.png") %}#}
+{#					    {% endif %}#}
+{#					    <img src="{{ avatar }}" alt="" class="avatar-comment">#}
+{#				    </div>#}
+{#				    <div class="col-sm-8">#}
+{#					    <div class="card-body border-text-comment">#}
+{#						    {{ comment.content }}#}
+{#					    </div>#}
+{#				    </div>#}
+{#			    </div>#}
+{#		    </div>#}
+{#	    {% endfor %}#}
+
 
     {% endblock %}
