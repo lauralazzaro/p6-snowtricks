@@ -108,7 +108,7 @@
 					    {{ form_widget(formComment) }}
 				    </div>
 
-				    <div class="col-auto">
+				    <div class="col-md-3">
 					    <button type="submit" class="btn btn-outline-secondary">Leave a comment</button>
 				    </div>
 			    </div>
@@ -123,54 +123,33 @@
 
 	    <hr>
 
-		    {% for comment in pagination %}
-			    <div class="card mb-3 comment-div-row">
-				    <div class="row">
-					    <div class="col-sm-1 justify-content-start">
-						    {% if trick.user.imageUrl is defined %}
-							    {% set avatar = asset("assets/uploads/avatars/" ~ trick.user.imageUrl) %}
-						    {% else %}
-							    {% set avatar = asset("assets/img/snowboard.png") %}
-						    {% endif %}
-						    <img src="{{ avatar }}" alt="" class="avatar-comment">
-					    </div>
-					    <div class="col-sm-8">
-						    <div class="card-body border-text-comment">
-							    {{ comment.content }} <br>
-							    <div class="card-body text-secondary">
-								    <small>Created: {{ comment.createdAt ? comment.createdAt|date('d-m-Y, H:m') : '' }}</small>
-							    </div>
+	    {% for comment in pagination %}
+		    <div class="card mb-3 comment-div-row">
+			    <div class="row">
+				    <div class="col-sm-1 justify-content-start">
+					    {% if trick.user.imageUrl is not null %}
+						    {% set avatar = asset("assets/uploads/avatars/" ~ comment.user.imageUrl) %}
+					    {% else %}
+						    {% set avatar = asset("assets/img/snowboard.png") %}
+					    {% endif %}
+					    <img src="{{ avatar }}" alt="" class="avatar-comment">
+				    </div>
+				    <div class="col-sm-8">
+					    <div class="card-body border-text-comment">
+						    {{ comment.content }} <br>
+						    <div class="card-body text-secondary">
+							    <small>Created: {{ comment.createdAt ? comment.createdAt|date('d-m-Y, H:m') : '' }}
+								    by {{ comment.user.name }} {{ comment.user.surname }}</small>
 						    </div>
 					    </div>
 				    </div>
 			    </div>
+		    </div>
 
-		    {% endfor %}
+	    {% endfor %}
 
-	    {# display navigation #}
+
 	    <div class="navigation">
 		    {{ knp_pagination_render(pagination) }}
 	    </div>
-
-{#	    {% for comment in trick.comment %}#}
-{#		    <div class="card mb-3 comment-div-row">#}
-{#			    <div class="row">#}
-{#				    <div class="col-sm-1 justify-content-start">#}
-{#					    {% if trick.user.imageUrl is defined %}#}
-{#						    {% set avatar = asset("assets/uploads/avatars/" ~ trick.user.imageUrl) %}#}
-{#					    {% else %}#}
-{#						    {% set avatar = asset("assets/img/snowboard.png") %}#}
-{#					    {% endif %}#}
-{#					    <img src="{{ avatar }}" alt="" class="avatar-comment">#}
-{#				    </div>#}
-{#				    <div class="col-sm-8">#}
-{#					    <div class="card-body border-text-comment">#}
-{#						    {{ comment.content }}#}
-{#					    </div>#}
-{#				    </div>#}
-{#			    </div>#}
-{#		    </div>#}
-{#	    {% endfor %}#}
-
-
     {% endblock %}

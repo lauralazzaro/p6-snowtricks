@@ -57,6 +57,7 @@ class Trick
         $this->image = new ArrayCollection();
         $this->video = new ArrayCollection();
         $this->setCreatedAt(new \DateTimeImmutable());
+        $this->setUpdatedAt(new \DateTimeImmutable());
     }
 
     public function getId(): ?int
