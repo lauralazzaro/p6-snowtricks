@@ -136,7 +136,10 @@
 					    </div>
 					    <div class="col-sm-8">
 						    <div class="card-body border-text-comment">
-							    {{ comment.content }}
+							    {{ comment.content }} <br>
+							    <div class="card-body text-secondary">
+								    <small>Created: {{ comment.createdAt ? comment.createdAt|date('d-m-Y, H:m') : '' }}</small>
+							    </div>
 						    </div>
 					    </div>
 				    </div>

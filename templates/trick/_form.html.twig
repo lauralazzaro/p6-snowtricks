@@ -99,11 +99,11 @@
     {{ form_row(form.image, { 'attr': {'class': 'custom-file-input'} }) }}
 
     <p>Add videos (Youtube)</p>
-    <ul id="email-fields-list"
+    <ul id="video-fields-list"
         data-prototype="{{ form_widget(form.video.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
         data-widget-counter="{{ form.video|length }}">
-        
+
         {% for videoUrl in form.video %}
             <li>
                 {{ form_widget(videoUrl) }}
@@ -114,7 +114,7 @@
 
     <button type="button"
             class="add-another-collection-widget"
-            data-list-selector="#email-fields-list">Add a video</button>
+            data-list-selector="#video-fields-list">Add a video</button>
 
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
 
