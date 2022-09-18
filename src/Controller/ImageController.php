@@ -20,7 +20,7 @@ class ImageController extends AbstractController
     #[Route('/image', name: 'app_image')]
     public function index(): Response
     {
-        return $this->render('image/index.html.twig', [
+        return $this->render('image/image.html.twig', [
             'controller_name' => 'ImageController',
         ]);
     }
@@ -31,7 +31,7 @@ class ImageController extends AbstractController
     {
         $file = $this->getParameter('images_directory') . $image->getImageUrl();
 
-        if(file_exists($file)){
+        if (file_exists($file)) {
             unlink($file);
         }
 
@@ -43,12 +43,12 @@ class ImageController extends AbstractController
     }
 
     #[Route('/image/{id}/edit', name: 'app_image_edit', methods: ['GET', 'POST'])]
-    public function editImage(Request $request, ImageRepository $imageRepository, TrickRepository $trickRepository, Image $image = null, Trick $trick = null): Response
+    public function editImage(Request $req, ImageRepository $imgRepo, TrickRepository $trickRepo, Image $img = null)
     {
-        $trick = $image->getTrick();
+        $trick = $img->getTrick();
 
-        $form = $this->createForm(ImageType::class, $image);
-        $form->handleRequest($request);
+        $form = $this->createForm(ImageType::class, $img);
+        $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $imageFile */
@@ -59,40 +59,39 @@ class ImageController extends AbstractController
                     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                     $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
-                    try {
-                        $file = $this->getParameter('images_directory') . $image->getImageUrl();
+                try {
+                    $file = $this->getParameter('images_directory') . $img->getImageUrl();
 
-                        if(file_exists($file)){
-                            unlink($file);
-                        }
-
-                        $imageFile->move(
-                            $this->getParameter('images_directory'),
-                            $newFilename
-                        );
-
-                        $image->setImageUrl($newFilename)->setTrick($trick);
-                        $imageRepository->add($image, true);
-
-                        $trick->addImage($image);
-                    } catch (FileException $e) {
-                        throw new \Exception($e);
+                    if (file_exists($file)) {
+                        unlink($file);
                     }
+
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+
+                    $img->setUpdatedAt(new \DateTimeImmutable());
+                    $img->setImageUrl($newFilename)->setTrick($trick);
+                    $imgRepo->add($img, true);
+
+                    $trick->addImage($img);
+                } catch (FileException $e) {
+                    throw new \Exception($e);
+                }
             }
 
 
             $slug = $trick->getSlug();
 
-            $trickRepository->update($trick, true);
+            $trickRepo->update($trick, true);
 
             return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
         }
 
-        return $this->renderForm('image/index.html.twig', [
-            'image' => $image,
+        return $this->renderForm('image/image.html.twig', [
+            'image' => $img,
             'form' => $form
         ]);
-
-
     }
 }

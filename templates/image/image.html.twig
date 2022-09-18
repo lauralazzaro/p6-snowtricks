@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+	{% block title %}Edit Image{% endblock %}
+
+	{% block body %}
+
+		{{ form_start(form) }}
+
+		<div class="col-sm-4 mb-5">
+			<img style="width: 560px; height: 315px" class="mb-2"
+			     src="{{ asset("assets/uploads/images/" ~ image.imageUrl) }}"
+			     alt="Card image trick">
+		</div>
+		{{ form_row(form.image) }}
+
+		<button type="submit" class="btn btn-outline-info mb-5">Update image</button>
+
+		{{ form_end(form) }}
+
+
+	{% endblock %}
+
+{% endblock %}

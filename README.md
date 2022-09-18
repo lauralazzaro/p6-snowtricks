@@ -39,11 +39,37 @@ For more information on the setup, please visit:
 ```
     php bin/console doctrine:migrations:migrate
 ```
-6. Start the server with:
+6. Load the fixtures for the database with:
+```
+    php bin/console doctrine:fixtures:load
+```
+
+By default the load command purges the database, removing all data from every table. To append your fixtures' data add the --append option.
+7. Start the server with:
 ```
     symfony server:start
 ```
-7. URL for the project:
+8. URL for the project:
 ```
     http://127.0.0.1:8000
 ```
+9. Users:
+```
+    1.
+    email: email0@email.com
+    pass: pass1234
+    
+    2.
+    email: email1@email.com
+    pass: pass1234
+    
+    3.
+    email: email2@email.com
+    pass: pass1234
+    
+    4.
+    email: email4@email.com
+    pass: pass1234
+```
+
+Or create a new user with your real email to test the reset password

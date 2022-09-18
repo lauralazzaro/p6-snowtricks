@@ -30,13 +30,15 @@ class TrickType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'form-select'
+                ]
             ])
             ->add('image', FileType::class, [
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
-                'empty_data' => '',
                 'multiple' => true
             ])
             ->add('video', CollectionType::class, [
@@ -46,7 +48,6 @@ class TrickType extends AbstractType
                 'required' => false,
                 'prototype' => true,
                 'label' => false,
-                'empty_data' => ''
             ]);
     }
 

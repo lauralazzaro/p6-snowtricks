@@ -7,37 +7,40 @@
     <meta name="author" content=""/>
     <title>Laura Lazzaro</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}"/>
-    <!-- Font Awesome icons (free version)-->
-    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
+    <script href="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <script href="jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
           type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
           rel="stylesheet" type="text/css"/>
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{ asset('assets/css/styles.css') }}"  rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body >
 <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav" style="margin-bottom: 50px">
-        <div class="container px-4 px-lg-5">
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+<div class="container" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_trick_index') }}">Snowtricks</a>
+            <button class="navbar-toggler" style="color: #000000" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/trick">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_trick_index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_forgot_password_request') }}">Reset Password</a></li>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_logout') }}">Logout</a>
-                        {% else %}
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">Login</a></li>
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_user_edit', {'id': app.user.id}) }}">My Account</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_login') }}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ path('app_register') }}">Register</a></li>
                     {% endif %}
-
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/reset-password">Reset Password</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-
+</div>
 <div class="container" style="margin-top: 100px">
     {% block header %} {% endblock %}
 </div>

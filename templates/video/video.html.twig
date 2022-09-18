@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    {% block title %}Edit Video{% endblock %}
+
+    {% block body %}
+
+        {{ form_start(form) }}
+
+        <div class="embed-responsive embed-responsive-4by3 mb-5">
+            <iframe width="560" height="315" class="embed-responsive-item" src="{{ video.videoUrl }}"
+                    title="YouTube video player"
+                    allowfullscreen></iframe>
+        </div>
+        {{ form_row(form.videoUrl) }}
+        <button type="submit" class="btn btn-outline-info mb-5">Update video</button>
+
+        {{ form_end(form) }}
+
+
+    {% endblock %}
+
+{% endblock %}

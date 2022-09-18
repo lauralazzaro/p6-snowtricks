@@ -17,10 +17,6 @@ class Video
     private $videoUrl;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    /**
-     * @Assert\DateTime
-     * @var string A "Y-m-d H:i:s" formatted value
-     */
     private $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
@@ -32,6 +28,11 @@ class Video
     #[ORM\ManyToOne(targetEntity: Trick::class, cascade: ['persist'], inversedBy: 'video')]
     #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private $trick;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTimeImmutable());
+    }
 
     public function getId(): ?int
     {

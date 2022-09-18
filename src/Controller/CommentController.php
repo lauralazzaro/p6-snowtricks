@@ -19,6 +19,4 @@ class CommentController extends AbstractController
             'controller_name' => 'CommentController',
         ]);
     }
-
-
 }
