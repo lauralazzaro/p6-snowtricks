@@ -218,6 +218,7 @@ class TrickController extends AbstractController
             $videoData = $form->get('video')->getData();
 
             foreach ($videoData as $video) {
+                $video->setTrick($trick);
                 $videoRepo->add($video);
                 $trick->addVideo($video);
             }
