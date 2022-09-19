@@ -233,6 +233,8 @@ class TrickController extends AbstractController
             $trick->setUpdatedAt(new \DateTimeImmutable());
 
             $trickRepo->update($trick, true);
+
+            return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('trick/edit.html.twig', [
             'trick' => $trick,
