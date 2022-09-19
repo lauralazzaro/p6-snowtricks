@@ -38,7 +38,7 @@ class Trick
     #[ORM\ManyToOne(targetEntity: Category::class)]
     private $category;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private $video;
 
