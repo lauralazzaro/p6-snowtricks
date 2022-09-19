@@ -37,7 +37,11 @@
 {{ form_start(form) }}
     <div class="row mb-2">
         <div class="col">
-            {{ form_row(form.name) }}
+            <div class="alert-danger">
+            {{ form_errors(form.name) }}
+            </div>
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
         </div>
     </div>
 
