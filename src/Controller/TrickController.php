@@ -42,11 +42,12 @@ class TrickController extends AbstractController
      */
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     public function new(
-        Request $request,
+        Request         $request,
         TrickRepository $trickRepository,
         ImageRepository $imageRepository,
         VideoRepository $videoRepository
-    ): Response {
+    ): Response
+    {
         if (!$this->getUser()) {
             throw new AccessDeniedException();
         }
@@ -114,7 +115,8 @@ class TrickController extends AbstractController
         PaginatorInterface     $paginator,
         EntityManagerInterface $em,
         Trick                  $trick = null
-    ): Response {
+    ): Response
+    {
         if (!$trick) {
             throw $this->createNotFoundException('No tricks found');
         }
@@ -173,7 +175,8 @@ class TrickController extends AbstractController
         TrickRepository $trickRepo,
         ImageRepository $imageRepo,
         VideoRepository $videoRepo
-    ): Response {
+    ): Response
+    {
 
         if (!$this->getUser()) {
             throw new AccessDeniedException();
@@ -243,12 +246,11 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'app_trick_delete', methods: ['POST'])]
+    #[Route('/{slug}/delete/{token}', name: 'app_trick_delete', methods: ['POST'])]
     public function delete(Request $request, Trick $trick, TrickRepository $trickRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
-            $trickRepository->remove($trick, true);
-        }
+
+        $trickRepository->remove($trick, true);
 
         return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
     }
