@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Image;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -33,6 +32,11 @@ class UserController extends AbstractController
     {
         if (!$this->getUser()) {
             throw new AccessDeniedException();
+        }
+
+        if ($user !== $this->getUser()) {
+            $this->addFlash('error','Your cannot edit this profile');
+            return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $form = $this->createForm(UserType::class, $user);
@@ -68,6 +72,8 @@ class UserController extends AbstractController
 
             $user->setUpdatedAt(new \DateTimeImmutable());
             $userRepository->add($user, true);
+
+            $this->addFlash('success', 'Your profile has been updated');
         }
 
         return $this->renderForm('user/user.html.twig', [

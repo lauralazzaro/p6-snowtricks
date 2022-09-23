@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Url;
 
 class VideoType extends AbstractType
 {
@@ -17,6 +18,10 @@ class VideoType extends AbstractType
                 'attr' => [
                     'class' => 'form-control mb-5'
                 ],
+                'label' => '',
+                'constraints' => [
+                    new Url()
+                ]
             ])
         ;
     }

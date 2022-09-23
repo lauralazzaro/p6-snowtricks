@@ -33,6 +33,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $email = $request->request->get('email', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
+        $request->getSession()->getFlashBag()->add('success', 'Welcome back, ' . $email);
 
         return new Passport(
             new UserBadge($email),

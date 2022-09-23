@@ -8,9 +8,9 @@
 	{% endif %}
 
 	<header class="masthead"
-	        style="background: url({{ img }}); background-size: 100% 100%; height: 600px">
+	        style="background: url('{{ img }}'); background-size: 100% 100%; height: 600px">
 		<div class="container">
-			{% if is_granted('IS_AUTHENTICATED_FULLY') and app.request.attributes.get('_route') == 'app_trick_show' %}
+			{% if is_granted('IS_AUTHENTICATED_FULLY') and app.request.attributes.get('_route') == 'app_trick_show' and app.user.id == trick.user.id %}
 				<div class="row justify-content-end">
 					<div class="col-sm-2 justify-content-center" style="background-color: #FFFFFF; z-index: 1000">
 						<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}"><i
@@ -24,7 +24,7 @@
 		<div class="container position-relative px-4 px-lg-5">
 			<div class="row gx-4 gx-lg-5 justify-content-center">
 				<div class="col-md-10 col-lg-8 col-xl-7">
-					<div class="site-heading">
+					<div class="site-heading" style="background-color: #6c757d">
 						<h1>{{ trick.name }}</h1>
 					</div>
 				</div>
@@ -127,7 +127,7 @@
 		    <div class="card mb-3 comment-div-row">
 			    <div class="row">
 				    <div class="col-sm-1 justify-content-start">
-					    {% if trick.user.imageUrl is not null %}
+					    {% if comment.user.imageUrl is not null %}
 						    {% set avatar = asset("assets/uploads/avatars/" ~ comment.user.imageUrl) %}
 					    {% else %}
 						    {% set avatar = asset("assets/img/snowboard.png") %}

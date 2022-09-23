@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Url;
 
 class TrickType extends AbstractType
 {
@@ -39,15 +41,14 @@ class TrickType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
-                'multiple' => true
+                'multiple' => true,
             ])
             ->add('video', CollectionType::class, [
                 'entry_type' => VideoType::class,
                 'allow_add' => true,
-                'allow_delete' => true,
+                'allow_delete' => false,
                 'required' => false,
-                'prototype' => true,
-                'label' => false,
+                'label' => ''
             ]);
     }
 

@@ -5,10 +5,8 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Trick;
-use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\TrickType;
-use App\Form\VideoType;
 use App\Repository\CommentRepository;
 use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
@@ -23,8 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Component\Validator\Validation;
 
 #[Route('/trick')]
 class TrickController extends AbstractController
@@ -99,6 +97,8 @@ class TrickController extends AbstractController
             $trick->setUser($user);
 
             $trickRepository->add($trick, true);
+
+            $this->addFlash('success', 'Trick "' . $trick->getName() . '" created!');
 
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -178,9 +178,12 @@ class TrickController extends AbstractController
     ): Response
     {
 
-        if (!$this->getUser()) {
-            throw new AccessDeniedException();
+        if ($trick->getUser() !== $this->getUser()) {
+            $this->addFlash('warning', 'Your can edit only the tricks that you created');
+            return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
+
+
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
@@ -221,6 +224,16 @@ class TrickController extends AbstractController
             $videoData = $form->get('video')->getData();
 
             foreach ($videoData as $video) {
+                $validator = Validation::createValidator();
+                $violations = $validator->validate($video->getVideoUrl(), new Url());
+
+                if (0 !== count($violations)) {
+                    // there are errors, now you can show them
+                    foreach ($violations as $violation) {
+                        echo $violation->getMessage() . '<br>';
+                    }
+                }
+
                 $video->setTrick($trick);
                 $videoRepo->add($video);
                 $trick->addVideo($video);
@@ -238,6 +251,8 @@ class TrickController extends AbstractController
 
             $trickRepo->update($trick, true);
 
+            $this->addFlash('success', 'Trick "' . $trick->getName() . '" modified!');
+
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('trick/edit.html.twig', [
@@ -251,6 +266,7 @@ class TrickController extends AbstractController
     {
 
         $trickRepository->remove($trick, true);
+        $this->addFlash('danger', 'Trick "' . $trick->getName() . '" removed!');
 
         return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
     }
