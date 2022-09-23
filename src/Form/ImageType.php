@@ -22,6 +22,9 @@ class ImageType extends AbstractType
                 'attr' => [
                     'class' => 'form-control mb-5'
                 ],
+                'constraints' => [
+                    new \Symfony\Component\Validator\Constraints\Image()
+                ]
             ]);
     }
 
