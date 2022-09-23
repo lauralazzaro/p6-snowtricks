@@ -6,8 +6,14 @@ use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity(
+    fields: ['name'],
+    message: 'Cannot have two tricks with the same name.'
+)]
 class Trick
 {
     #[ORM\Id]
@@ -15,7 +21,8 @@ class Trick
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Assert\NotBlank]
     private $name;
 
     #[ORM\Column(type: 'text')]
@@ -33,7 +40,7 @@ class Trick
     #[ORM\ManyToOne(targetEntity: Category::class)]
     private $category;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private $video;
 

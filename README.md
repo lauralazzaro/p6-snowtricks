@@ -45,6 +45,7 @@ For more information on the setup, please visit:
 ```
 
 By default the load command purges the database, removing all data from every table. To append your fixtures' data add the --append option.
+
 7. Start the server with:
 ```
     symfony server:start
