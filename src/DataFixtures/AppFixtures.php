@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
         /*
          * Category
          */
-        $arrayCategory = ['Front board', 'Back-flip', 'Rotating', 'Slide'];
+        $arrayCategory = ['Grabs', 'Flips', 'Rotation', 'Slide'];
         for ($i = 0; $i < 4; $i++) {
             $category = new Category();
             $category->setName($arrayCategory[$i]);
@@ -52,31 +52,84 @@ class AppFixtures extends Fixture
         }
 
         /*
-         * Tricks
+         * Tricks 1
          */
-        for ($i = 0; $i < 10; $i++) {
-            $userForTrick = $this->getReference('user' . random_int(0, 3));
-            $categoryTrick = $this->getReference('category' . random_int(0, 3));
+        $userForTrick = $this->getReference('user' . random_int(0, 3));
+        $categoryTrick = $this->getReference('category0');
 
-            $trick = new Trick();
-            $trick->setName($faker->words(random_int(1, 4), true));
-            $trick->setUser($userForTrick);
-            $trick->setCategory($categoryTrick);
-            $trick->setDescription($faker->paragraphs(random_int(1, 3), true));
+        $trick = new Trick();
+        $trick->setName('Stalefish');
+        $trick->setUser($userForTrick);
+        $trick->setCategory($categoryTrick);
+        $trick->setDescription('Saisie de la carre backside de la planche entre les deux pieds avec la main arrière');
 
-            $slugify = new Slugify();
-            $slug = $slugify->slugify($trick->getName());
-            $trick->setSlug($slug);
-            $this->setReference('trick' . $i, $trick);
-            $manager->persist($trick);
-        }
+        $slugify = new Slugify();
+        $slug = $slugify->slugify($trick->getName());
+        $trick->setSlug($slug);
+        $this->setReference('trick0', $trick);
+        $manager->persist($trick);
+
+        /*
+        * Tricks 2
+        */
+        $userForTrick = $this->getReference('user' . random_int(0, 3));
+        $categoryTrick = $this->getReference('category2');
+
+        $trick = new Trick();
+        $trick->setName('180');
+        $trick->setUser($userForTrick);
+        $trick->setCategory($categoryTrick);
+        $trick->setDescription('Une rotation horizontale d\'un demi-tour, soit 180 degrés d\'angle');
+
+        $slugify = new Slugify();
+        $slug = $slugify->slugify($trick->getName());
+        $trick->setSlug($slug);
+        $this->setReference('trick1', $trick);
+        $manager->persist($trick);
+
+        /*
+        * Tricks 3
+        */
+        $userForTrick = $this->getReference('user' . random_int(0, 3));
+        $categoryTrick = $this->getReference('category1');
+
+        $trick = new Trick();
+        $trick->setName('Front flip');
+        $trick->setUser($userForTrick);
+        $trick->setCategory($categoryTrick);
+        $trick->setDescription('Une rotation verticale vers l\'avant de 360 degrés');
+
+        $slugify = new Slugify();
+        $slug = $slugify->slugify($trick->getName());
+        $trick->setSlug($slug);
+        $this->setReference('trick2', $trick);
+        $manager->persist($trick);
+
+        /*
+        * Tricks 4
+        */
+        $userForTrick = $this->getReference('user' . random_int(0, 3));
+        $categoryTrick = $this->getReference('category3');
+
+        $trick = new Trick();
+        $trick->setName('Nose slide');
+        $trick->setUser($userForTrick);
+        $trick->setCategory($categoryTrick);
+        $trick->setDescription('Le slide se fait l\'avant de la planche sur la barre suivant l\'axe');
+
+        $slugify = new Slugify();
+        $slug = $slugify->slugify($trick->getName());
+        $trick->setSlug($slug);
+        $this->setReference('trick3', $trick);
+        $manager->persist($trick);
+
 
         /*
          * Comments
          */
         for ($i = 0; $i < 70; $i++) {
             $userComment = $this->getReference('user' . random_int(0, 3));
-            $trickComment = $this->getReference('trick' . random_int(0, 9));
+            $trickComment = $this->getReference('trick' . random_int(0, 3));
 
             $comment = new Comment();
             $comment->setUser($userComment);
