@@ -1,64 +1,61 @@
 {% extends 'base.html.twig' %}
 {% block header %}
-    <header class="masthead"
-            style="background: url({{ asset("assets/img/home-bg.jpg") }}); background-size: 100% 100%; height: 600px">
-        <div class="container position-relative px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="site-heading">
-                        <h1>Snowtricks</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+	<header class="masthead"
+	        style="background: url({{ asset("assets/img/home-bg.jpg") }}); background-size: 100% 100%; height: 600px">
+		<div class="container position-relative px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-md-10 col-lg-8 col-xl-7">
+					<div class="site-heading">
+						<h1>Snowtricks</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
 {% endblock %}
 
 {% block content %}
-    {% block body %}
-        <div class="container">
-            <div class="row mb-5">
-                {% for trick in tricks %}
-                    <div class="col-md-3">
-                        <div class="card mb-2">
-                            {% if trick.image[0] is defined %}
-                                <img class="card-img-top"
-                                     src="{{ asset("assets/uploads/images/" ~ trick.image[0].imageUrl) }}"
-                                     style="max-height: 195px;"
-                                     alt="Card image cap">
-                            {% else %}
-                                <img class="card-img-top"
-                                     src="{{ asset("assets/img/trick.jpg") }}"
-                                     alt="Card image cap">
-                            {% endif %}
-                            <div class="card-body" style="display: inline-block ">
-                                <div class="row">
-                                    <div class="col float-left">
-                                        <a href="{{ path('app_trick_show', {'slug': trick.slug}) }}"><b><small>{{ trick.name }}</small></b></a>
-                                    </div>
-                                    {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.id == trick.user.id %}
-                                    <div class="col float-right">
-                                        <a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}"><i
-                                                    class="fa-solid fa-pen"></i></a>
-                                        {{ include('trick/_delete_form.html.twig') }}
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+	{% block body %}
+		<div class="container">
+			<div class="row mb-5">
+				{% for trick in tricks %}
+					<div class="col-md-3">
+						<div class="card mb-2">
+							{% if trick.image[0] is defined %}
+								<img class="card-img-top"
+								     src="{{ asset("assets/uploads/images/" ~ trick.image[0].imageUrl) }}"
+								     style="max-height: 195px;"
+								     alt="Card image cap">
+							{% else %}
+								<img class="card-img-top"
+								     src="{{ asset("assets/img/trick.jpg") }}"
+								     alt="Card image cap">
+							{% endif %}
+							<div class="card-body" style="display: inline-block ">
+								<div class="row">
+									<div class="col float-left">
+										<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}"><b><small>{{ trick.name }}</small></b></a>
+									</div>
+									{% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.id == trick.user.id %}
+										<div class="col float-right">
+											<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}"><i
+														class="fa-solid fa-pen"></i></a>
+											{{ include('trick/_delete_form.html.twig') }}
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
 
-                {% else %}
-                    <div>
-                        <p>
-                            no records found
-                        </p>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
-
-        <a class="btn btn-primary" href="{{ path('app_trick_new') }}">Create new</a>
-    {% endblock %}
+				{% else %}
+					<div>
+						<p>
+							no records found
+						</p>
+					</div>
+				{% endfor %}
+			</div>
+		</div
+	{% endblock %}
 {% endblock %}
