@@ -24,7 +24,7 @@
 		<div class="container position-relative px-4 px-lg-5">
 			<div class="row gx-4 gx-lg-5 justify-content-center">
 				<div class="col-md-10 col-lg-8 col-xl-7">
-					<div class="site-heading" style="background-color: #6c757d">
+					<div class="site-heading">
 						<h1>{{ trick.name }}</h1>
 					</div>
 				</div>
@@ -34,8 +34,7 @@
 {% endblock %}
 
     {% block content %}
-
-	    <div class="row">
+	    <div class="row" id="mediaContent">
 		    <div class="col-sm-6">
 			    <div class="row">
 				    {% for image in trick.image %}
@@ -61,15 +60,20 @@
 				    {% endfor %}
 			    </div>
 		    </div>
-
 	    </div>
-	    <div class="container">
-		    <div class="row mb-4">
-			    <div class="col-sm-12">
-				    <p>
-					    {{ trick.description }}
-				    </p>
-			    </div>
+
+	    <div class="row mb-3">
+		    <div class="col-2"></div>
+		    <button class="btn btn-primary col-8" id="showMediaContent">Show Media</button>
+		    <button class="btn btn-primary col-8" id="hideMediaContent">Hide Media</button>
+	    </div>
+
+	    <div class="row mb-4">
+		    <div class="col-sm-12">
+			    <h3>Description : </h3>
+			    <p>
+				    {{ trick.description }}
+			    </p>
 		    </div>
 	    </div>
 
@@ -152,4 +156,17 @@
 	    <div class="navigation">
 		    {{ knp_pagination_render(pagination) }}
 	    </div>
+	    <script>
+            $("#showMediaContent").click(function () {
+                $("#mediaContent").show();
+                $("#showMediaContent").hide();
+                $("#hideMediaContent").show();
+            });
+
+            $("#hideMediaContent").click(function () {
+                $("#mediaContent").hide();
+                $("#showMediaContent").show();
+                $("#hideMediaContent").hide();
+            });
+	    </script>
     {% endblock %}

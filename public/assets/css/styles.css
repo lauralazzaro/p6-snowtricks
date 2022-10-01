@@ -113,3 +113,32 @@ ul {
     background: lightblue;
     text-align: center;
 }
+
+.site-heading {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 575px) {
+    #mediaContent {
+        display:none;
+    }
+    #showMediaContent {
+        display:block;
+    }
+    #hideMediaContent {
+        display:none;
+    }
+}
+
+@media (min-width: 575px) {
+    #mediaContent {
+        display:block;
+    }
+    #showMediaContent {
+        display:none;
+    }
+    #hideMediaContent {
+        display:none;
+    }
+}

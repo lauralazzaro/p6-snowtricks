@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserType extends AbstractType
 {
@@ -33,6 +35,19 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
+                'constraints' => [
+                    new All([
+                        new File([
+                            "mimeTypes" => [
+                                "image/png",
+                                "image/jpg",
+                                "image/jpeg",
+                                "image/gif"
+                            ],
+                            "mimeTypesMessage" => "This file is not a valid image."
+                        ])
+                    ])
+                ]
             ])
         ;
     }
