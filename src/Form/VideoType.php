@@ -16,7 +16,7 @@ class VideoType extends AbstractType
         $builder
             ->add('videoUrl', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control mb-5'
+                    'class' => 'form-control'
                 ],
                 'label' => '',
                 'constraints' => [

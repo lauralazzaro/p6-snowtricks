@@ -113,3 +113,7 @@ ul {
     background: lightblue;
     text-align: center;
 }
+
+.site-heading {
+    background: rgba(0, 0, 0, 0.4);
+}

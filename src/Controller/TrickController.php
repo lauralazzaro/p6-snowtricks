@@ -83,6 +83,19 @@ class TrickController extends AbstractController
             $videoData = $form->get('video')->getData();
 
             foreach ($videoData as $video) {
+                $validator = Validation::createValidator();
+                $violations = $validator->validate($video->getVideoUrl(), new Url());
+
+                if (0 !== count($violations)) {
+                    // there are errors, now you can show them
+                    foreach ($violations as $violation) {
+                        echo $violation->getMessage() . '<br>';
+                    }
+                } else {
+                    $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
+                    $video->setVideoUrl($embedUrl);
+                }
+
                 $video->setTrick($trick);
                 $videoRepository->add($video);
                 $trick->addVideo($video);
@@ -232,6 +245,9 @@ class TrickController extends AbstractController
                     foreach ($violations as $violation) {
                         echo $violation->getMessage() . '<br>';
                     }
+                } else {
+                    $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
+                    $video->setVideoUrl($embedUrl);
                 }
 
                 $video->setTrick($trick);
@@ -269,5 +285,20 @@ class TrickController extends AbstractController
         $this->addFlash('danger', 'Trick "' . $trick->getName() . '" removed!');
 
         return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function getYoutubeEmbedUrl($url): string
+    {
+        $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
+        $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
+
+        if (preg_match($longUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
+
+        if (preg_match($shortUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
+        return 'https://www.youtube.com/embed/' . $youtube_id ;
     }
 }
