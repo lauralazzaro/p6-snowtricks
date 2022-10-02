@@ -23,7 +23,7 @@ where users can have discussion about it.
 
 <br>
 
-### After the installation of symfony, run the following command to verify if your system is symfony ready:
+### After the installation of symfony, run the following command to verify if your system is symfony ready
 
 > symfony check:requirements
 
@@ -35,7 +35,7 @@ where users can have discussion about it.
 
 <br>
 
-### Create a file named '.env.local' place in the root folder of the project and then configure the variables 'MAILER_DSN' and 'DATABASE_URL':
+### Create a file named '.env.local' place in the root folder of the project and then configure the variables 'MAILER_DSN' and 'DATABASE_URL'
 
 > ex:  
 > MAILER_DSN=smtp://user:pass@smtp.example.com:25  
