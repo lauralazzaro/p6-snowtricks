@@ -30,9 +30,12 @@ class TrickController extends AbstractController
     #[Route('/', name: 'app_trick_index', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
-        return $this->render('trick/index.html.twig', [
-            'tricks' => $trickRepository->findAll()
-        ]);
+        return $this->render(
+            'trick/index.html.twig',
+            [
+                'tricks' => $trickRepository->findAll()
+            ]
+        );
     }
 
     /**
@@ -54,7 +57,9 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $imageFile */
+            /**
+             * @var UploadedFile $imageFile
+             */
             $imageUploaded = $form->get('image')->getData();
 
             if ($imageUploaded) {
@@ -111,10 +116,13 @@ class TrickController extends AbstractController
 
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('trick/new.html.twig', [
-            'trick' => $trick,
-            'form' => $form,
-        ]);
+        return $this->renderForm(
+            'trick/new.html.twig',
+            [
+                'trick' => $trick,
+                'form' => $form,
+            ]
+        );
     }
 
     #[Route('/{slug}', name: 'app_trick_show', methods: ['GET', 'POST'])]
@@ -154,17 +162,22 @@ class TrickController extends AbstractController
             10 /*limit per page*/
         );
 
-        $pagination->setCustomParameters([
-            'align' => 'center',
-            'style' => 'bottom'
-        ]);
+        $pagination->setCustomParameters(
+            [
+                'align' => 'center',
+                'style' => 'bottom'
+            ]
+        );
 
         // parameters to template
-        return $this->render('trick/show.html.twig', [
-            'trick' => $trick,
-            'pagination' => $pagination,
-            'formComment' => $form->createView()
-        ]);
+        return $this->render(
+            'trick/show.html.twig',
+            [
+                'trick' => $trick,
+                'pagination' => $pagination,
+                'formComment' => $form->createView()
+            ]
+        );
     }
 
     /**
@@ -193,7 +206,9 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $imageFile */
+            /**
+             * @var UploadedFile $imageFile
+             */
             $imageUploaded = $form->get('image')->getData();
 
             if ($imageUploaded) {
@@ -263,10 +278,13 @@ class TrickController extends AbstractController
 
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('trick/edit.html.twig', [
-            'trick' => $trick,
-            'form' => $form,
-        ]);
+        return $this->renderForm(
+            'trick/edit.html.twig',
+            [
+                'trick' => $trick,
+                'form' => $form,
+            ]
+        );
     }
 
     #[Route('/{slug}/delete/{token}', name: 'app_trick_delete', methods: ['POST'])]

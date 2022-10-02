@@ -1,7 +1,5 @@
-
-
 jQuery(document).ready(function () {
-    jQuery('.add-another-collection-widget').click(function (e) {
+    jQuery(".add-another-collection-widget").click(function () {
         let list = jQuery(jQuery(this).attr("data-list-selector"));
         let counter = list.data("widget-counter") || list.children().length;
         let newWidget = list.attr("data-prototype");

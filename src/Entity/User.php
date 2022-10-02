@@ -170,7 +170,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
-//        return $this->eraseCredentials();
+        //        return $this->eraseCredentials();
     }
 
     public function getUserIdentifier(): string

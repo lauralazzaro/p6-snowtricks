@@ -5,6 +5,10 @@ footer {
   padding-bottom: 0;
 }
 
+.site-heading {
+  background: rgba(0, 0, 0, 0.4);
+}
+
 header.masthead {
   position: relative;
   margin-bottom: 3rem;
@@ -13,7 +17,7 @@ header.masthead {
   background-size: cover;
 }
 
-header.masthead:before {
+header.masthead::before {
   content: "";
   position: absolute;
   top: 0;
@@ -34,13 +38,15 @@ header.masthead .site-heading {
   text-align: center;
 }
 
-header.masthead .page-heading h1, header.masthead .page-heading .h1,
+header.masthead .page-heading h1,
+header.masthead .page-heading .h1,
 header.masthead .site-heading h1,
 header.masthead .site-heading .h1 {
   font-size: 3rem;
 }
 
-header.masthead .post-heading h1, header.masthead .post-heading .h1 {
+header.masthead .post-heading h1,
+header.masthead .post-heading .h1 {
   font-size: 2.25rem;
 }
 
@@ -61,17 +67,17 @@ header.masthead .post-heading .meta a {
     padding-bottom: 4rem;
   }
 
-  header.masthead .page-heading h1, header.masthead .page-heading .h1,
+  header.masthead .page-heading h1,
+  header.masthead .page-heading .h1,
   header.masthead .site-heading h1,
   header.masthead .site-heading .h1 {
     font-size: 5rem;
   }
 
-  header.masthead .post-heading h1, header.masthead .post-heading .h1 {
+  header.masthead .post-heading h1,
+  header.masthead .post-heading .h1 {
     font-size: 3.5rem;
   }
-
-  /*noinspection ALL,CssUnusedSymbol*/
 }
 
 .avatar-comment {
@@ -103,7 +109,7 @@ ul {
 }
 
 .nav-item:hover {
-  background-color: #999999;
+  background-color: #999;
 }
 
 .mainNav {
@@ -112,10 +118,6 @@ ul {
   padding: 40px;
   background: lightblue;
   text-align: center;
-}
-
-.site-heading {
-  background: rgba(0, 0, 0, 0.4);
 }
 
 /* MEDIA QUERIES */

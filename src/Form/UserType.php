@@ -16,17 +16,28 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add(
+                'name',
+                TextType::class,
+                [
                 'attr' => [
                     'class' => 'form-control'
                 ],
-            ])
-            ->add('surname', TextType::class, [
+                ]
+            )
+            ->add(
+                'surname',
+                TextType::class,
+                [
                 'attr' => [
                     'class' => 'form-control'
                 ],
-            ])
-            ->add('imageUrl', FileType::class, [
+                ]
+            )
+            ->add(
+                'imageUrl',
+                FileType::class,
+                [
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
@@ -36,8 +47,10 @@ class UserType extends AbstractType
                     'class' => 'form-control'
                 ],
                 'constraints' => [
-                    new All([
-                        new File([
+                    new All(
+                        [
+                        new File(
+                            [
                             "mimeTypes" => [
                                 "image/png",
                                 "image/jpg",
@@ -45,17 +58,21 @@ class UserType extends AbstractType
                                 "image/gif"
                             ],
                             "mimeTypesMessage" => "This file is not a valid image."
-                        ])
-                    ])
+                            ]
+                        )
+                        ]
+                    )
                 ]
-            ])
-        ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class,
-        ]);
+            ]
+        );
     }
 }

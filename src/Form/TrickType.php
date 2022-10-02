@@ -21,24 +21,39 @@ class TrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add(
+                'name',
+                TextType::class,
+                [
                 'attr' => [
                     'class' => 'form-control'
                 ],
-            ])
-            ->add('description', TextareaType::class, [
+                ]
+            )
+            ->add(
+                'description',
+                TextareaType::class,
+                [
                 'attr' => [
                     'class' => 'form-control'
                 ],
-            ])
-            ->add('category', EntityType::class, [
+                ]
+            )
+            ->add(
+                'category',
+                EntityType::class,
+                [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'attr' => [
                     'class' => 'form-select'
                 ]
-            ])
-            ->add('image', FileType::class, [
+                ]
+            )
+            ->add(
+                'image',
+                FileType::class,
+                [
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
@@ -48,8 +63,10 @@ class TrickType extends AbstractType
                     'class' => 'form-control mb-5'
                 ],
                 'constraints' => [
-                    new All([
-                        new File([
+                    new All(
+                        [
+                        new File(
+                            [
                             "mimeTypes" => [
                                 "image/png",
                                 "image/jpg",
@@ -57,23 +74,32 @@ class TrickType extends AbstractType
                                 "image/gif"
                             ],
                             "mimeTypesMessage" => "This file is not a valid image."
-                        ])
-                    ])
+                            ]
+                        )
+                        ]
+                    )
                 ]
-            ])
-            ->add('video', CollectionType::class, [
+                ]
+            )
+            ->add(
+                'video',
+                CollectionType::class,
+                [
                 'entry_type' => VideoType::class,
                 'allow_add' => true,
                 'allow_delete' => false,
                 'required' => false,
                 'label' => ''
-            ]);
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Trick::class,
-        ]);
+            ]
+        );
     }
 }

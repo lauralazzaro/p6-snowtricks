@@ -245,6 +245,4 @@ class Trick
     {
         $this->comment = $comment;
     }
-
-
 }

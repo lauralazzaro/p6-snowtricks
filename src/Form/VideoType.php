@@ -14,7 +14,10 @@ class VideoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('videoUrl', TextType::class, [
+            ->add(
+                'videoUrl',
+                TextType::class,
+                [
                 'attr' => [
                     'class' => 'form-control'
                 ],
@@ -22,14 +25,16 @@ class VideoType extends AbstractType
                 'constraints' => [
                     new Url()
                 ]
-            ])
-        ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Video::class,
-        ]);
+            ]
+        );
     }
 }

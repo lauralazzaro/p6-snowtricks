@@ -16,9 +16,12 @@ class VideoController extends AbstractController
     #[Route('/video', name: 'app_video')]
     public function index(): Response
     {
-        return $this->render('video/video.html.twig', [
+        return $this->render(
+            'video/video.html.twig',
+            [
             'controller_name' => 'VideoController',
-        ]);
+            ]
+        );
     }
 
     #[Route('video/{id}/delete', name: 'app_video_delete')]
@@ -55,9 +58,12 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
         }
 
-        return $this->renderForm('video/video.html.twig', [
+        return $this->renderForm(
+            'video/video.html.twig',
+            [
             'video' => $video,
             'form' => $form
-        ]);
+            ]
+        );
     }
 }

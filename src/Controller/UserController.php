@@ -19,9 +19,12 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user')]
     public function index(): Response
     {
-        return $this->render('user/user.html.twig', [
+        return $this->render(
+            'user/user.html.twig',
+            [
             'controller_name' => 'UserController',
-        ]);
+            ]
+        );
     }
 
     /**
@@ -35,7 +38,7 @@ class UserController extends AbstractController
         }
 
         if ($user !== $this->getUser()) {
-            $this->addFlash('error','Your cannot edit this profile');
+            $this->addFlash('error', 'Your cannot edit this profile');
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -45,7 +48,9 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-            /** @var UploadedFile $imageUploaded */
+            /**
+ * @var UploadedFile $imageUploaded
+*/
             $imageUploaded = $form->get('imageUrl')->getData();
 
             if ($imageUploaded) {
@@ -76,10 +81,13 @@ class UserController extends AbstractController
             $this->addFlash('success', 'Your profile has been updated');
         }
 
-        return $this->renderForm('user/user.html.twig', [
+        return $this->renderForm(
+            'user/user.html.twig',
+            [
             'id' => $user->getId(),
             'user' => $user,
             'form' => $form,
-        ]);
+            ]
+        );
     }
 }

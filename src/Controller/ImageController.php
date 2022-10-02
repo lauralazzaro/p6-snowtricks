@@ -20,9 +20,12 @@ class ImageController extends AbstractController
     #[Route('/image', name: 'app_image')]
     public function index(): Response
     {
-        return $this->render('image/image.html.twig', [
+        return $this->render(
+            'image/image.html.twig',
+            [
             'controller_name' => 'ImageController',
-        ]);
+            ]
+        );
     }
 
 
@@ -51,7 +54,9 @@ class ImageController extends AbstractController
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $imageFile */
+            /**
+ * @var UploadedFile $imageFile
+*/
             $imageFile = $form->get('image')->getData();
 
 
@@ -89,9 +94,12 @@ class ImageController extends AbstractController
             return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
         }
 
-        return $this->renderForm('image/image.html.twig', [
+        return $this->renderForm(
+            'image/image.html.twig',
+            [
             'image' => $img,
             'form' => $form
-        ]);
+            ]
+        );
     }
 }
