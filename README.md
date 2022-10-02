@@ -2,41 +2,41 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/02f7946a18ce4a329b385912cdf58791)](https://www.codacy.com/gh/lauralazzaro/snowtricks/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lauralazzaro/snowtricks&amp;utm_campaign=Badge_Grade)
 
-### Description of the project
+## Description of the project
 
 Develop, using the PHP framework Symfony, a website called **Snowtricks** used to share tips about snowboarding and where users can have discussion about it.
 
-### Technologies
+## Technologies
 
-  - PHP >= 8.0.2
-  - MariaDB 10.4.21
-  - Symfony 6.0
+- PHP >= 8.0.2
+- MariaDB 10.4.21
+- Symfony 6.0
 
-### Installation
+## Installation
 
 
 <br>
 
-#### Install Symfony-CLI
+### Install Symfony-CLI
 
 > Go to https://symfony.com/download for the instruction based on your operating system
 
 
 <br>
 
-#### After the installation of symfony, run the following command to verify if your system is symfony ready:
+### After the installation of symfony, run the following command to verify if your system is symfony ready:
 
 > symfony check:requirements
 
 <br>
 
-#### Clone or download the GitHub repository:
+### Clone or download the GitHub repository:
 
 > git clone https://github.com/lauralazzaro/snowtricks
 
 <br>
 
-#### Create a file named '.env.local' place in the root folder of the project and then configure the variables 'MAILER_DSN' and 'DATABASE_URL':
+### Create a file named '.env.local' place in the root folder of the project and then configure the variables 'MAILER_DSN' and 'DATABASE_URL':
 
 > ex:  
 > MAILER_DSN=smtp://user:pass@smtp.example.com:25  
@@ -53,34 +53,34 @@ serverVersion: </span>
 
 For more information on the setup, please visit:
 
-  - https://symfony.com/doc/current/mailer.html
-  - https://symfony.com/doc/current/reference/configuration/doctrine.html
+- https://symfony.com/doc/current/mailer.html
+- https://symfony.com/doc/current/reference/configuration/doctrine.html
 
 
 <br>
 
-#### Install the dependancies with [Composer](https://getcomposer.org/download/)
+### Install the dependancies with [Composer](https://getcomposer.org/download/)
 
 > composer install
 
 
 <br>
 
-#### Create the database using the command:
+### Create the database using the command:
 
 > php bin/console doctrine:database:create
 
 
 <br>
 
-#### Create the tables in the database with:
+### Create the tables in the database with:
 
 > php bin/console doctrine:migrations:migrate
 
 
 <br>
 
-#### Load the fixtures for the database with:
+### Load the fixtures for the database with:
 
 > php bin/console doctrine:fixtures:load
 
@@ -90,21 +90,21 @@ the --append option.
 
 <br>
 
-#### Start the server with:
+### Start the server with:
 
 > symfony server:start
 
 
 <br>
 
-#### URL for the project:
+### URL for the project:
 
 > http://127.0.0.1:8000
 
 
 <br>
 
-#### Users already present in the database that created the initial tricks:
+### Users already present in the database that created the initial tricks:
 
 > email: email0@email.com  
 > password: pass1234
@@ -121,4 +121,4 @@ the --append option.
 
 <br>
 
-#### Create a new user with your real email to test the reset password
+### Create a new user with your real email to test the reset password
