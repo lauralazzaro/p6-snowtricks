@@ -4,7 +4,8 @@
 
 ## Description of the project
 
-Develop, using the PHP framework Symfony, a website called **Snowtricks** used to share tips about snowboarding and where users can have discussion about it.
+Develop, using the PHP framework Symfony, a website called **Snowtricks** used to share tips about snowboarding and
+where users can have discussion about it.
 
 ## Technologies
 
@@ -13,7 +14,6 @@ Develop, using the PHP framework Symfony, a website called **Snowtricks** used t
 - Symfony 6.0
 
 ## Installation
-
 
 <br>
 
@@ -55,7 +55,6 @@ For more information on the setup, please visit:
 
 - https://symfony.com/doc/current/mailer.html
 - https://symfony.com/doc/current/reference/configuration/doctrine.html
-
 
 <br>
 
