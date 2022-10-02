@@ -9,9 +9,9 @@ where users can have discussion about it.
 
 ## Technologies
 
-- PHP >= 8.0.2
-- MariaDB 10.4.21
-- Symfony 6.0
+-   PHP >= 8.0.2
+-   MariaDB 10.4.21
+-   Symfony 6.0
 
 ## Installation
 
@@ -21,7 +21,6 @@ where users can have discussion about it.
 
 > Go to https://symfony.com/download for the instruction based on your operating system
 
-
 <br>
 
 ### After the installation of symfony, run the following command to verify if your system is symfony ready:
@@ -30,7 +29,7 @@ where users can have discussion about it.
 
 <br>
 
-### Clone or download the GitHub repository:
+### Clone or download the GitHub repository
 
 > git clone https://github.com/lauralazzaro/snowtricks
 
@@ -53,8 +52,8 @@ serverVersion: </span>
 
 For more information on the setup, please visit:
 
-- https://symfony.com/doc/current/mailer.html
-- https://symfony.com/doc/current/reference/configuration/doctrine.html
+-   https://symfony.com/doc/current/mailer.html
+-   https://symfony.com/doc/current/reference/configuration/doctrine.html
 
 <br>
 
@@ -62,48 +61,42 @@ For more information on the setup, please visit:
 
 > composer install
 
-
 <br>
 
-### Create the database using the command:
+### Create the database using the command
 
 > php bin/console doctrine:database:create
 
-
 <br>
 
-### Create the tables in the database with:
+### Create the tables in the database with
 
 > php bin/console doctrine:migrations:migrate
 
-
 <br>
 
-### Load the fixtures for the database with:
+### Load the fixtures for the database with
 
 > php bin/console doctrine:fixtures:load
 
 By default, the load command purges the database, removing all data from every table. To append your fixtures' data add
 the --append option.
 
-
 <br>
 
-### Start the server with:
+### Start the server with
 
 > symfony server:start
 
-
 <br>
 
-### URL for the project:
+### URL for the project
 
 > http://127.0.0.1:8000
 
-
 <br>
 
-### Users already present in the database that created the initial tricks:
+### Users already present in the database that created the initial tricks
 
 > email: email0@email.com  
 > password: pass1234
@@ -116,7 +109,6 @@ the --append option.
 
 > email: email4@email.com  
 > password: pass1234
-
 
 <br>
 
