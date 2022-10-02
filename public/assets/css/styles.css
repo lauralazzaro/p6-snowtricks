@@ -1,144 +1,148 @@
 @charset "UTF-8";
 
 footer {
-    padding-top: 0;
-    padding-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 header.masthead {
-    position: relative;
-    margin-bottom: 3rem;
-    padding-top: calc(2rem + 57px);
-    padding-bottom: 2rem;
-    background-size: cover;
+  position: relative;
+  margin-bottom: 3rem;
+  padding-top: calc(2rem + 57px);
+  padding-bottom: 2rem;
+  background-size: cover;
 }
 
 header.masthead:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.5;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.5;
 }
 
 header.masthead .page-heading,
 header.masthead .post-heading,
 header.masthead .site-heading {
-    color: #fff;
+  color: #fff;
 }
 
 header.masthead .page-heading,
 header.masthead .site-heading {
-    text-align: center;
+  text-align: center;
 }
 
 header.masthead .page-heading h1, header.masthead .page-heading .h1,
 header.masthead .site-heading h1,
 header.masthead .site-heading .h1 {
-    font-size: 3rem;
+  font-size: 3rem;
 }
 
 header.masthead .post-heading h1, header.masthead .post-heading .h1 {
-    font-size: 2.25rem;
+  font-size: 2.25rem;
 }
 
 header.masthead .post-heading .meta {
-    font-size: 1.25rem;
-    font-weight: 300;
-    font-style: italic;
-    font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.25rem;
+  font-weight: 300;
+  font-style: italic;
+  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 header.masthead .post-heading .meta a {
-    color: #fff;
+  color: #fff;
 }
 
 @media (min-width: 992px) {
-    header.masthead {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
-    }
+  header.masthead {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 
-    header.masthead .page-heading h1, header.masthead .page-heading .h1,
-    header.masthead .site-heading h1,
-    header.masthead .site-heading .h1 {
-        font-size: 5rem;
-    }
+  header.masthead .page-heading h1, header.masthead .page-heading .h1,
+  header.masthead .site-heading h1,
+  header.masthead .site-heading .h1 {
+    font-size: 5rem;
+  }
 
-    header.masthead .post-heading h1, header.masthead .post-heading .h1 {
-        font-size: 3.5rem;
-    }
+  header.masthead .post-heading h1, header.masthead .post-heading .h1 {
+    font-size: 3.5rem;
+  }
 
-    /*noinspection ALL,CssUnusedSymbol*/
+  /*noinspection ALL,CssUnusedSymbol*/
 }
 
 .avatar-comment {
-    width: 50px;
-    height: 50px;
+  width: 50px;
+  height: 50px;
 }
 
 .comment-div-row {
-    width: 60%;
-    margin-left: 20%;
-    border: none;
+  width: 60%;
+  margin-left: 20%;
+  border: none;
 }
 
 .border-text-comment {
-    border: #5c636a solid 1px;
+  border: #5c636a solid 1px;
 }
 
 div.ui-menu li {
-    list-style: none;
-    background-image: none;
-    background-repeat: no-repeat;
-    background-position: 0;
+  list-style: none;
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: 0;
 }
 
 ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .nav-item:hover {
-    background-color: #999999;
+  background-color: #999999;
 }
 
 .mainNav {
-    position: fixed;
-    top:0;
-    padding:40px;
-    background: lightblue;
-    text-align: center;
+  position: fixed;
+  top: 0;
+  padding: 40px;
+  background: lightblue;
+  text-align: center;
 }
 
 .site-heading {
-    background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 /* MEDIA QUERIES */
 @media (max-width: 575px) {
-    #mediaContent {
-        display:none;
-    }
-    #showMediaContent {
-        display:block;
-    }
-    #hideMediaContent {
-        display:none;
-    }
+  #mediaContent {
+    display: none;
+  }
+
+  #showMediaContent {
+    display: block;
+  }
+
+  #hideMediaContent {
+    display: none;
+  }
 }
 
 @media (min-width: 575px) {
-    #mediaContent {
-        display:block;
-    }
-    #showMediaContent {
-        display:none;
-    }
-    #hideMediaContent {
-        display:none;
-    }
+  #mediaContent {
+    display: flex;
+  }
+
+  #showMediaContent {
+    display: none;
+  }
+
+  #hideMediaContent {
+    display: none;
+  }
 }

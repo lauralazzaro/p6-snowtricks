@@ -28,8 +28,10 @@ class ResetPasswordController extends AbstractController
     private ResetPasswordHelperInterface $resetPasswordHelper;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper, EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        ResetPasswordHelperInterface $resetPasswordHelper,
+        EntityManagerInterface $entityManager
+    ) {
         $this->resetPasswordHelper = $resetPasswordHelper;
         $this->entityManager = $entityManager;
     }
@@ -38,8 +40,11 @@ class ResetPasswordController extends AbstractController
      * Display & process form to request a password reset.
      */
     #[Route('/', name: 'app_forgot_password_request')]
-    public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
-    {
+    public function request(
+        Request $request,
+        MailerInterface $mailer,
+        TranslatorInterface $translator
+    ): Response {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
 

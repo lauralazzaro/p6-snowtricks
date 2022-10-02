@@ -44,8 +44,7 @@ class TrickController extends AbstractController
         TrickRepository $trickRepository,
         ImageRepository $imageRepository,
         VideoRepository $videoRepository
-    ): Response
-    {
+    ): Response {
         if (!$this->getUser()) {
             throw new AccessDeniedException();
         }
@@ -91,11 +90,9 @@ class TrickController extends AbstractController
                     foreach ($violations as $violation) {
                         echo $violation->getMessage() . '<br>';
                     }
-                } else {
-                    $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
-                    $video->setVideoUrl($embedUrl);
                 }
-
+                $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
+                $video->setVideoUrl($embedUrl);
                 $video->setTrick($trick);
                 $videoRepository->add($video);
                 $trick->addVideo($video);
@@ -103,7 +100,6 @@ class TrickController extends AbstractController
 
             $slugify = new Slugify();
             $slug = $slugify->slugify($trick->getName());
-
             $trick->setSlug($slug);
 
             $user = $this->getUser();
@@ -128,8 +124,7 @@ class TrickController extends AbstractController
         PaginatorInterface     $paginator,
         EntityManagerInterface $em,
         Trick                  $trick = null
-    ): Response
-    {
+    ): Response {
         if (!$trick) {
             throw $this->createNotFoundException('No tricks found');
         }
@@ -188,14 +183,11 @@ class TrickController extends AbstractController
         TrickRepository $trickRepo,
         ImageRepository $imageRepo,
         VideoRepository $videoRepo
-    ): Response
-    {
-
+    ): Response {
         if ($trick->getUser() !== $this->getUser()) {
             $this->addFlash('warning', 'Your can edit only the tricks that you created');
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
-
 
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
@@ -245,10 +237,10 @@ class TrickController extends AbstractController
                     foreach ($violations as $violation) {
                         echo $violation->getMessage() . '<br>';
                     }
-                } else {
-                    $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
-                    $video->setVideoUrl($embedUrl);
                 }
+
+                $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
+                $video->setVideoUrl($embedUrl);
 
                 $video->setTrick($trick);
                 $videoRepo->add($video);
@@ -278,7 +270,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{slug}/delete/{token}', name: 'app_trick_delete', methods: ['POST'])]
-    public function delete(Request $request, Trick $trick, TrickRepository $trickRepository): Response
+    public function delete(Trick $trick, TrickRepository $trickRepository): Response
     {
 
         $trickRepository->remove($trick, true);
@@ -299,6 +291,6 @@ class TrickController extends AbstractController
         if (preg_match($shortUrlRegex, $url, $matches)) {
             $youtube_id = $matches[count($matches) - 1];
         }
-        return 'https://www.youtube.com/embed/' . $youtube_id ;
+        return 'https://www.youtube.com/embed/' . $youtube_id;
     }
 }
