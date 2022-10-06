@@ -42,7 +42,7 @@ where users can have discussion about it.
 > DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7&charset=utf8mb4"
 
 > **db_user and db_password:** *your credentials as database administrator*  
-> **db_name:** *snowtricks*
+> **db_name:** *snowtricks*  
 > **serverVersion:** *the db engine that you are using in your environment*
 
 <span style="color: orangered; "> If you get the *sync-metadata-storage* error, verify that you put the right version of the db of your environment in
