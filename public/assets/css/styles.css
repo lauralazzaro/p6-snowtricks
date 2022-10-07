@@ -148,3 +148,19 @@ ul {
     display: none;
   }
 }
+
+.imgshowtrick {
+  height: 150px;
+}
+
+img {
+  max-height: 100%;
+}
+
+.imgListTricks {
+  height: 70%;
+}
+
+.cardList {
+  width: 100%;
+}

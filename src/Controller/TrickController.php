@@ -159,7 +159,7 @@ class TrickController extends AbstractController
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
+            5 /*limit per page*/
         );
 
         $pagination->setCustomParameters(
@@ -212,14 +212,6 @@ class TrickController extends AbstractController
             $imageUploaded = $form->get('image')->getData();
 
             if ($imageUploaded) {
-                foreach ($trick->getImage() as $image) {
-                    $file = $this->getParameter('images_directory') . $image->getImageUrl();
-
-                    if (file_exists($file)) {
-                        unlink($file);
-                    }
-                }
-
                 foreach ($imageUploaded as $imageFile) {
                     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                     $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
