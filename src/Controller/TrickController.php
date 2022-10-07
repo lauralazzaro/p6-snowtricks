@@ -3,26 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\CommentRepository;
-use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
-use App\Repository\VideoRepository;
+use App\Services\ImageHelper;
+use App\Services\VideoHelper;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Constraints\Url;
-use Symfony\Component\Validator\Validation;
 
 #[Route('/trick')]
 class TrickController extends AbstractController
@@ -38,15 +33,12 @@ class TrickController extends AbstractController
         );
     }
 
-    /**
-     * @throws \Exception
-     */
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         TrickRepository $trickRepository,
-        ImageRepository $imageRepository,
-        VideoRepository $videoRepository
+        VideoHelper $videoHelper,
+        ImageHelper $imgHelper
     ): Response {
         if (!$this->getUser()) {
             throw new AccessDeniedException();
@@ -57,58 +49,23 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var UploadedFile $imageFile
-             */
-            $imageUploaded = $form->get('image')->getData();
-
-            if ($imageUploaded) {
-                foreach ($imageUploaded as $imageFile) {
-                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-                    try {
-                        $imageFile->move(
-                            $this->getParameter('images_directory'),
-                            $newFilename
-                        );
-
-                        $image = new Image();
-                        $image->setImageUrl($this->getParameter('images_directory') . $newFilename)->setTrick($trick);
-                        $imageRepository->add($image, true);
-
-                        $trick->addImage($image);
-                    } catch (FileException $e) {
-                        throw new \Exception($e);
-                    }
-                }
-            }
-
-            $videoData = $form->get('video')->getData();
-
-            foreach ($videoData as $video) {
-                $validator = Validation::createValidator();
-                $violations = $validator->validate($video->getVideoUrl(), new Url());
-
-                if (0 !== count($violations)) {
-                    // there are errors, now you can show them
-                    foreach ($violations as $violation) {
-                        echo $violation->getMessage() . '<br>';
-                    }
-                }
-                $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
-                $video->setVideoUrl($embedUrl);
-                $video->setTrick($trick);
-                $videoRepository->add($video);
-                $trick->addVideo($video);
-            }
-
             $slugify = new Slugify();
             $slug = $slugify->slugify($trick->getName());
             $trick->setSlug($slug);
 
             $user = $this->getUser();
             $trick->setUser($user);
+
+            $imgHelper->uploadImage(
+                $form->get('image')->getData(),
+                $trick,
+                $this->getParameter('images_directory')
+            );
+
+            $videoHelper->saveVideoUrl(
+                $form->get('video')->getData(),
+                $trick
+            );
 
             $trickRepository->add($trick, true);
 
@@ -180,22 +137,13 @@ class TrickController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     * @param Trick $trick
-     * @param TrickRepository $trickRepo
-     * @param ImageRepository $imageRepo
-     * @param VideoRepository $videoRepo
-     * @return Response
-     * @throws \Exception
-     */
     #[Route('/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
         Trick $trick,
         TrickRepository $trickRepo,
-        ImageRepository $imageRepo,
-        VideoRepository $videoRepo
+        ImageHelper $imgHelper,
+        VideoHelper $videoHelper
     ): Response {
         if ($trick->getUser() !== $this->getUser()) {
             $this->addFlash('warning', 'Your can edit only the tricks that you created');
@@ -206,53 +154,16 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var UploadedFile $imageFile
-             */
-            $imageUploaded = $form->get('image')->getData();
+            $imgHelper->uploadImage(
+                $form->get('image')->getData(),
+                $trick,
+                $this->getParameter('images_directory')
+            );
 
-            if ($imageUploaded) {
-                foreach ($imageUploaded as $imageFile) {
-                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-                    try {
-                        $imageFile->move(
-                            $this->getParameter('images_directory'),
-                            $newFilename
-                        );
-
-                        $image = new Image();
-                        $image->setImageUrl($newFilename)->setTrick($trick);
-                        $imageRepo->add($image, true);
-
-                        $trick->addImage($image);
-                    } catch (FileException $e) {
-                        throw new \Exception($e);
-                    }
-                }
-            }
-
-            $videoData = $form->get('video')->getData();
-
-            foreach ($videoData as $video) {
-                $validator = Validation::createValidator();
-                $violations = $validator->validate($video->getVideoUrl(), new Url());
-
-                if (0 !== count($violations)) {
-                    // there are errors, now you can show them
-                    foreach ($violations as $violation) {
-                        echo $violation->getMessage() . '<br>';
-                    }
-                }
-
-                $embedUrl = $this->getYoutubeEmbedUrl($video->getVideoUrl());
-                $video->setVideoUrl($embedUrl);
-
-                $video->setTrick($trick);
-                $videoRepo->add($video);
-                $trick->addVideo($video);
-            }
+            $videoHelper->saveVideoUrl(
+                $form->get('video')->getData(),
+                $trick
+            );
 
             $slugify = new Slugify();
             $slug = $slugify->slugify($trick->getName());
@@ -282,26 +193,9 @@ class TrickController extends AbstractController
     #[Route('/{slug}/delete/{token}', name: 'app_trick_delete', methods: ['POST'])]
     public function delete(Trick $trick, TrickRepository $trickRepository): Response
     {
-
         $trickRepository->remove($trick, true);
         $this->addFlash('danger', 'Trick "' . $trick->getName() . '" removed!');
 
         return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    private function getYoutubeEmbedUrl($url): string
-    {
-        $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
-        $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
-        $youtube_id = '';
-
-        if (preg_match($longUrlRegex, $url, $matches)) {
-            $youtube_id = $matches[count($matches) - 1];
-        }
-
-        if (preg_match($shortUrlRegex, $url, $matches)) {
-            $youtube_id = $matches[count($matches) - 1];
-        }
-        return 'https://www.youtube.com/embed/' . $youtube_id;
     }
 }

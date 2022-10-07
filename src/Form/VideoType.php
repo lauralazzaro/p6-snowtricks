@@ -21,7 +21,7 @@ class VideoType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => '',
+                'label' => false,
                 'constraints' => [
                     new Url()
                 ]

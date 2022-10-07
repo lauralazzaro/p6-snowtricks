@@ -60,7 +60,7 @@ class TrickType extends AbstractType
                 'empty_data' => '',
                 'multiple' => true,
                 'attr' => [
-                    'class' => 'form-control mb-5'
+                    'class' => 'mb-5 custom-file-input'
                 ],
                 'constraints' => [
                     new All(
@@ -89,7 +89,7 @@ class TrickType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => false,
                 'required' => false,
-                'label' => ''
+                'label' => false
                 ]
             );
     }

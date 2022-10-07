@@ -7,6 +7,7 @@ use App\Entity\Trick;
 use App\Form\ImageType;
 use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
+use App\Services\ImageHelper;
 use Cocur\Slugify\Slugify;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -23,7 +24,7 @@ class ImageController extends AbstractController
         return $this->render(
             'image/image.html.twig',
             [
-            'controller_name' => 'ImageController',
+                'controller_name' => 'ImageController',
             ]
         );
     }
@@ -46,46 +47,23 @@ class ImageController extends AbstractController
     }
 
     #[Route('/image/{id}/edit', name: 'app_image_edit', methods: ['GET', 'POST'])]
-    public function editImage(Request $req, ImageRepository $imgRepo, TrickRepository $trickRepo, Image $img = null)
-    {
+    public function editImage(
+        Request $req,
+        ImageHelper $imgHelper,
+        TrickRepository $trickRepo,
+        Image $img = null
+    ): Response {
         $trick = $img->getTrick();
 
         $form = $this->createForm(ImageType::class, $img);
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**
-            * @var UploadedFile $imageFile
-            */
-            $imageFile = $form->get('image')->getData();
-
-
-            if ($imageFile) {
-                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-                try {
-                    $file = $this->getParameter('images_directory') . $img->getImageUrl();
-
-                    if (file_exists($file)) {
-                        unlink($file);
-                    }
-
-                    $imageFile->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
-
-                    $img->setUpdatedAt(new \DateTimeImmutable());
-                    $img->setImageUrl($newFilename)->setTrick($trick);
-                    $imgRepo->add($img, true);
-
-                    $trick->addImage($img);
-                } catch (FileException $e) {
-                    throw new \Exception($e);
-                }
-            }
-
+            $imgHelper->uploadImage(
+                $form->get('image')->getData(),
+                $trick,
+                $this->getParameter('images_directory')
+            );
 
             $slug = $trick->getSlug();
 
@@ -97,8 +75,8 @@ class ImageController extends AbstractController
         return $this->renderForm(
             'image/image.html.twig',
             [
-            'image' => $img,
-            'form' => $form
+                'image' => $img,
+                'form' => $form
             ]
         );
     }
