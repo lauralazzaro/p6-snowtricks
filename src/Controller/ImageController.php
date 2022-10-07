@@ -55,8 +55,8 @@ class ImageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /**
- * @var UploadedFile $imageFile
-*/
+            * @var UploadedFile $imageFile
+            */
             $imageFile = $form->get('image')->getData();
 
 

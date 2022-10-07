@@ -233,7 +233,7 @@ class Trick
     /**
      * @return mixed
      */
-    public function getComment() : Collection
+    public function getComment(): Collection
     {
         return $this->comment;
     }

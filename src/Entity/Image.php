@@ -31,7 +31,7 @@ class Image
 
     public function __construct()
     {
-        $this->setCreatedAt(new \DateTimeImmutable);
+        $this->setCreatedAt(new \DateTimeImmutable());
     }
 
     public function getId(): ?int

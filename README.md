@@ -35,9 +35,10 @@ where users can have discussion about it.
 
 <br>
 
-### Create a file named '.env.local' place in the root folder of the project and then configure the variables 'MAILER_DSN' and 'DATABASE_URL'
+### Create a file named '.env.local' place in the root folder of the project and then configure the variables 'APP_ENV' and 'MAILER_DSN' and 'DATABASE_URL'
 
-> ex:  
+> **APP_ENV=prod**  
+> 
 > MAILER_DSN=smtp://user:pass@smtp.example.com:25  
 > DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7&charset=utf8mb4"
 

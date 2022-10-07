@@ -43,7 +43,7 @@ class TrickController extends AbstractController
      */
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     public function new(
-        Request         $request,
+        Request $request,
         TrickRepository $trickRepository,
         ImageRepository $imageRepository,
         VideoRepository $videoRepository
@@ -127,11 +127,11 @@ class TrickController extends AbstractController
 
     #[Route('/{slug}', name: 'app_trick_show', methods: ['GET', 'POST'])]
     public function show(
-        Request                $request,
-        CommentRepository      $commentRepository,
-        PaginatorInterface     $paginator,
+        Request $request,
+        CommentRepository $commentRepository,
+        PaginatorInterface $paginator,
         EntityManagerInterface $em,
-        Trick                  $trick = null
+        Trick $trick = null
     ): Response {
         if (!$trick) {
             throw $this->createNotFoundException('No tricks found');
@@ -191,8 +191,8 @@ class TrickController extends AbstractController
      */
     #[Route('/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
     public function edit(
-        Request         $request,
-        Trick           $trick,
+        Request $request,
+        Trick $trick,
         TrickRepository $trickRepo,
         ImageRepository $imageRepo,
         VideoRepository $videoRepo
@@ -293,6 +293,7 @@ class TrickController extends AbstractController
     {
         $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
         $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
+        $youtube_id = '';
 
         if (preg_match($longUrlRegex, $url, $matches)) {
             $youtube_id = $matches[count($matches) - 1];
